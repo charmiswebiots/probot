@@ -5,10 +5,10 @@ class ViewSubscriptionLayout extends StatelessWidget {
   final SubscribeModel? subscribe;
   final AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>>? snapShot;
   final dynamic data;
-  final GestureTapCallback? onTap;
+  final GestureTapCallback? onTap,cancelOnTap;
 
   const ViewSubscriptionLayout(
-      {Key? key, this.subscribe, this.snapShot, this.data, this.onTap})
+      {Key? key, this.subscribe, this.snapShot, this.data, this.onTap,this.cancelOnTap})
       : super(key: key);
 
   @override
@@ -16,18 +16,18 @@ class ViewSubscriptionLayout extends StatelessWidget {
     return Column(children: [
       CommonSubscribeTitle(
           subscribeModel: subscribe,
-          isActivePlan: snapShot!.data!.docs[0]
+          isActivePlan: snapShot!.data!.docs.isEmpty  ?  false :snapShot!.data!.docs[0]
                   .data()["subscriptionType"]
                   .toString()
                   .toLowerCase() ==
               data["type"].toString().toLowerCase()),
       const VSpace(Sizes.s20),
-      snapShot!.data!.docs[0]
+      snapShot!.data != null && snapShot!.data!.docs.isNotEmpty  &&     snapShot!.data!.docs[0]
                   .data()["subscriptionType"]
                   .toString()
                   .toLowerCase() ==
               data["type"].toString().toLowerCase()
-          ? Column(children: [
+    ? Column(children: [
               CommonRow(
                   title: appFonts.paidAmount,
                   price:
@@ -45,7 +45,18 @@ class ViewSubscriptionLayout extends StatelessWidget {
                   price: DateFormat("dd/MM/yyyy").format(DateTime.parse(
                       snapShot!.data!.docs[0]["expiryDate"]
                           .toDate()
-                          .toString())))
+                          .toString()))),
+        const VSpace(Sizes.s20),
+        ButtonCommon(
+            title: appFonts.cancel,
+            isGradient: false,
+            margin: 0,
+            onTap: cancelOnTap,
+            style: AppCss.outfitRegular18
+                .textColor(appCtrl.appTheme.primary)
+                .letterSpace(.4),
+            color: appCtrl.appTheme.white,
+            borderColor: appCtrl.appTheme.primary)
             ]).marginSymmetric(horizontal: Insets.i15)
           : Column(children: [
               textCommon.semiBoldPrimary18(
@@ -59,7 +70,7 @@ class ViewSubscriptionLayout extends StatelessWidget {
               RowCommon(title: appFonts.unlimitedContent)
             ]).marginSymmetric(horizontal: Insets.i15),
       const VSpace(Sizes.s20),
-      if (snapShot!.data!.docs[0]
+      if (  snapShot!.data != null && snapShot!.data!.docs.isNotEmpty  &&  snapShot!.data!.docs[0]
               .data()["subscriptionType"]
               .toString()
               .toLowerCase() !=
@@ -72,9 +83,9 @@ class ViewSubscriptionLayout extends StatelessWidget {
             style: AppCss.outfitRegular18
                 .textColor(appCtrl.appTheme.primary)
                 .letterSpace(.4),
-            color: appCtrl.appTheme.sameWhite,
-            borderColor: appCtrl.appTheme.primary),
-      const VSpace(Sizes.s20)
+            color: appCtrl.appTheme.white,
+            borderColor: appCtrl.appTheme.primary).paddingOnly(bottom: Insets.i20),
+
     ]);
   }
 }

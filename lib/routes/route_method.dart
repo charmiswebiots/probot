@@ -1,4 +1,5 @@
 import 'package:probot/screens/app_screens/allow_notification_screen/allow_notification_screen.dart';
+import 'package:probot/screens/app_screens/card_screen/card_screen.dart';
 import '../config.dart';
 import '../screens/app_screens/amazon_product_feature_screen/amazon_product_feature_screen.dart';
 import '../screens/app_screens/amazon_product_listing/amazon_product_listing.dart';
@@ -128,6 +129,7 @@ class AppRoute {
     GetPage(name: _routeName.amazonProductReviewScreen, page: () => AmazonProductReviewScreen()),
     GetPage(name: _routeName.ecommerceDetailsScreen, page: () => EcommerceScreen()),
     GetPage(name: _routeName.amazonProductTitleScreen, page: () => AmazonProductTitleScreen()),
+    GetPage(name: _routeName.cardScreen, page: () => CardScreen()),
 
   ];
 }

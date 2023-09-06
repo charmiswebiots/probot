@@ -15,7 +15,7 @@ class PlanListUi extends StatelessWidget {
               padding: const EdgeInsets.symmetric(
                   horizontal: Insets.i20, vertical: Insets.i15),
               child: Column(children: [
-                snapShot!.data!.docs[0]
+                snapShot!.data != null && snapShot!.data!.docs.isNotEmpty  &&      snapShot!.data!.docs[0]
                             .data()["subscriptionType"]
                             .toString()
                             .toLowerCase() ==
@@ -37,7 +37,7 @@ class PlanListUi extends StatelessWidget {
                 const VSpace(Sizes.s5),
                 textCommon.regularLightText12(text:"/${data["type"]}")
               ])).planExtension(appCtrl.appTheme.sameWhite)),
-      (snapShot!.data!.docs[0]
+      (  snapShot!.data != null && snapShot!.data!.docs.isNotEmpty  &&   snapShot!.data!.docs[0]
                   .data()["subscriptionType"]
                   .toString()
                   .toLowerCase() ==

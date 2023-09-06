@@ -17,7 +17,7 @@ class SubscribePlanUI extends StatelessWidget {
               margin: const EdgeInsets.symmetric(
                   vertical: Insets.i8, horizontal: Insets.i5),
               decoration: BoxDecoration(
-                  color: snapShot!.data!.docs[0]
+                  color:  snapShot!.data!.docs.isEmpty  ?  appCtrl.appTheme.primaryLight : snapShot!.data!.docs[0]
                               .data()["subscriptionType"]
                               .toString()
                               .toLowerCase() ==
@@ -25,7 +25,7 @@ class SubscribePlanUI extends StatelessWidget {
                       ? appCtrl.appTheme.yellowColor
                       : appCtrl.appTheme.primaryLight,
                   border: Border.all(
-                      color: snapShot!.data!.docs[0]
+                      color:   snapShot!.data!.docs.isEmpty  ?  appCtrl.appTheme.primaryLight1 :  snapShot!.data!.docs[0]
                                   .data()["subscriptionType"]
                                   .toString()
                                   .toLowerCase() ==
@@ -35,7 +35,7 @@ class SubscribePlanUI extends StatelessWidget {
                   borderRadius:
                       SmoothBorderRadius(cornerRadius: 10, cornerSmoothing: 1)),
               child:PlanListUi(snapShot: snapShot,data: data))),
-      if (snapShot!.data!.docs[0]
+      if (  snapShot!.data != null && snapShot!.data!.docs.isNotEmpty  &&   snapShot!.data!.docs[0]
               .data()["subscriptionType"]
               .toString()
               .toLowerCase() ==

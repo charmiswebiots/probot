@@ -26,7 +26,7 @@ class ChatLayoutController extends GetxController
   List selectedIndex = [];
   List selectedData = [];
   DateTime? receiverTime;
-  AnimationController? animationController;
+
   Animation? animation;
   String? chatId;
   bool isRewardedAdLoaded = false;
@@ -128,13 +128,7 @@ class ChatLayoutController extends GetxController
     }
     loadInterstitialAd();
 
-    animationController =
-        AnimationController(vsync: this, duration: const Duration(seconds: 2));
-    animationController!.repeat(reverse: true);
-    animation = Tween(begin: 15.0, end: 24.0).animate(animationController!)
-      ..addListener(() {
-        update();
-      });
+
     update();
     super.onReady();
   }
@@ -165,8 +159,39 @@ class ChatLayoutController extends GetxController
                 .delete();
           });
         }
-      })
-;
+      });
+    } else {
+      await FirebaseFirestore.instance
+          .collection("users")
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .collection("chats")
+          .where("chatId", isEqualTo: chatId)
+          .get()
+          .then((value) {
+        value.docs.asMap().entries.forEach((element) async{
+          if (element.value.exists) {
+          await  FirebaseFirestore.instance
+                .collection("users")
+                .doc(FirebaseAuth.instance.currentUser!.uid)
+                .collection("chats")
+                .doc(element.value.id)
+                .delete();
+          }
+        });
+      }).then((value) async{
+        await FirebaseFirestore.instance
+            .collection("chatHistory")
+            .doc(chatId).collection("chats").get().then((userChat) async{
+              if(userChat.docs.isNotEmpty){
+                userChat.docs.asMap().entries.forEach((element)async {
+                  await FirebaseFirestore.instance
+                      .collection("chatHistory")
+                      .doc(chatId).collection("chats").doc(element.value.id).delete();
+                });
+              }
+        });
+      });
+
     }
     speechStopMethod();
     isLongPress = false;
@@ -180,7 +205,6 @@ class ChatLayoutController extends GetxController
 
   @override
   void onClose() {
-    animationController!.dispose();
     // TODO: implement onClose
     super.onClose();
   }
@@ -188,7 +212,6 @@ class ChatLayoutController extends GetxController
   @override
   void dispose() {
     super.dispose();
-    animationController!.dispose();
     _interstitialAd?.dispose();
     bannerAd?.dispose();
     bannerAd = null;

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import '../../../../config.dart';
 
 class SubscriptionList extends StatelessWidget {
@@ -13,7 +15,7 @@ class SubscriptionList extends StatelessWidget {
               .snapshots(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              return StreamBuilder(
+              return   StreamBuilder(
                   stream: FirebaseFirestore.instance
                       .collection("userSubscribe")
                       .where("email",
@@ -22,8 +24,20 @@ class SubscriptionList extends StatelessWidget {
                       .snapshots(),
                   builder: (context, snapShot) {
                     if (snapShot.hasData) {
-                      return PlanListCommon(snapShot: snapshot);
+                      if(snapShot.data != null && snapShot.data!.docs.isNotEmpty) {
+                        log("SNAOOO");
+                        return PlanListCommon(snapShot: snapshot);
+                      }else{
+                        log("SNAO");
+                        subscribeCtrl.subscribeModel = SubscribeModel.fromJson(
+                            snapshot.data!.docs[0].data());
+                        subscribeCtrl.selectedPrice =
+                        subscribeCtrl.subscribeModel!.price!;
+                        return PlanListCommon(snapShot: snapshot);
+                      }
                     } else {
+
+
                       subscribeCtrl.subscribeModel = SubscribeModel.fromJson(
                           snapshot.data!.docs[0].data());
                       subscribeCtrl.selectedPrice =

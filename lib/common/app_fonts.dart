@@ -718,5 +718,9 @@ class AppFonts {
   String youCanPurchase = "youCanPurchase";
   String flutterWave = "flutterWave";
   String payStack = "payStack";
+  String cancelSubscription = "Cancel Subscription";
+  String cancelNote = "Once You Cancel Subscription Your Money Is Not Refundable";
+  String areYouSureCancelSubscription = "Are You Sure Want To Cancel Subscription ?";
+  String successfullyCancelSubscription = "Successfully Cancel Subscription";
 
 }

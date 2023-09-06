@@ -1,3 +1,5 @@
+import 'package:flutter/services.dart';
+
 import '../config.dart';
 
 class TextFieldCommon extends StatelessWidget {
@@ -12,6 +14,7 @@ class TextFieldCommon extends StatelessWidget {
   final FocusNode? focusNode;
   final ValueChanged<String>? onChanged;
   final int? maxLength,minLines,maxLines;
+  final List<TextInputFormatter>? inputFormatters;
 
   const TextFieldCommon(
       {Key? key,
@@ -26,7 +29,7 @@ class TextFieldCommon extends StatelessWidget {
       this.keyboardType,
       this.focusNode,
       this.onChanged,
-      this.maxLength,this.minLines, this.maxLines})
+      this.maxLength,this.minLines, this.maxLines,this.inputFormatters})
       : super(key: key);
 
   @override
@@ -43,6 +46,7 @@ class TextFieldCommon extends StatelessWidget {
         onChanged: onChanged,
         minLines: minLines,
         maxLength: maxLength,
+        inputFormatters: inputFormatters,
         decoration: InputDecoration(
             fillColor: fillColor ?? appCtrl.appTheme.textField,
             filled: true,

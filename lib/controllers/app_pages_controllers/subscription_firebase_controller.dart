@@ -8,7 +8,7 @@ class SubscriptionFirebaseController extends GetxController {
       paymentMethod,
       isSubscribe = true,
       amountBalance,
-      isBack}) async {
+      isBack, subscriptionId}) async {
     DateTime now = DateTime.now();
     DateTime? expiryDate;
     if (isSubscribe == true) {
@@ -59,6 +59,7 @@ class SubscriptionFirebaseController extends GetxController {
           "price": isSubscribe ? 0 : amountBalance,
           "balance": appCtrl.envConfig["balance"],
           "paymentMethod": paymentMethod,
+          "subscriptionId": isSubscribe ? subscriptionId : "",
         }).then((value) {
           if(isBack) {
            Get.back();
@@ -80,6 +81,7 @@ class SubscriptionFirebaseController extends GetxController {
           "subscriptionType": isSubscribe ? subscribeModel!.type : "",
           "balance": appCtrl.envConfig["balance"],
           "paymentMethod": paymentMethod,
+          "subscriptionId": isSubscribe ? subscriptionId : "",
         }).then((value) {
           if(isBack) {
             Get.back();

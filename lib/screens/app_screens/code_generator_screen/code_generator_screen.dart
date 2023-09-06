@@ -56,7 +56,11 @@ class CodeGeneratorScreen extends StatelessWidget {
                           bannerAdIsLoaded: codeGeneratorCtrl.bannerAdIsLoaded,
                           currentAd: codeGeneratorCtrl.currentAd),
                     if (codeGeneratorCtrl.isLoader == true) const LoaderLayout()
-                  ]))));
+                  ]).inkWell(
+                    onTap: (){
+                      FocusScope.of(context).unfocus();
+                    },
+                  ))));
     });
   }
 }

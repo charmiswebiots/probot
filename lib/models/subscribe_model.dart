@@ -7,7 +7,7 @@ class SubscribeModel {
   String? icon;
   String? chatCount;
   String? imageCount;
-  String? textCompletionCount;
+  String? textCompletionCount,planId;
   List<String>? benefits;
 
   SubscribeModel(
@@ -20,7 +20,7 @@ class SubscribeModel {
         this.chatCount,
         this.imageCount,
         this.textCompletionCount,
-        this.benefits});
+        this.benefits,this.planId});
 
   SubscribeModel.fromJson(Map<String, dynamic> json) {
     title = json['title'];
@@ -32,6 +32,7 @@ class SubscribeModel {
     chatCount = json['chatCount'];
     imageCount = json['imageCount'];
     textCompletionCount = json['textCompletionCount'];
+    planId = json["planId"];
     if(json["benefits"] != null ) {
       benefits = json['benefits'].cast<String>();
     }
@@ -48,6 +49,7 @@ class SubscribeModel {
     data['chatCount'] = chatCount;
     data['imageCount'] = imageCount;
     data['textCompletionCount'] = textCompletionCount;
+    data['planId'] = planId;
     if(benefits !=null) {
       data['benefits'] = benefits;
     }

@@ -10,7 +10,8 @@ class PlanListCommon extends StatelessWidget {
     return GetBuilder<SubscriptionController>(builder: (subscribeCtrl) {
       return SingleChildScrollView(
         scrollDirection: Axis.horizontal,
-        child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+        child:
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
           ...snapShot.data!.docs.asMap().entries.map((e) {
             return Stack(alignment: Alignment.topRight, children: [
               ClipSmoothRect(
@@ -32,9 +33,11 @@ class PlanListCommon extends StatelessWidget {
                         ClipSmoothRect(
                             child: Container(
                                 padding: const EdgeInsets.symmetric(
-                                    horizontal: Insets.i25, vertical: Insets.i15),
+                                    horizontal: Insets.i25,
+                                    vertical: Insets.i15),
                                 child: Column(children: [
-                                  textCommon.outfitMediumPrimary14(text: e.value.data()["planType"]),
+                                  textCommon.outfitMediumPrimary14(
+                                      text: e.value.data()["planType"]),
                                   const VSpace(Sizes.s10),
                                   Text(
                                       appCtrl.priceSymbol +
@@ -42,11 +45,13 @@ class PlanListCommon extends StatelessWidget {
                                                   e.value.data()["price"])
                                               .toStringAsFixed(2)
                                               .toString(),
-                                      style: AppCss.outfitBold18
-                                          .textColor(appCtrl.appTheme.sameBlack)),
+                                      style: AppCss.outfitBold18.textColor(
+                                          appCtrl.appTheme.sameBlack)),
                                   const VSpace(Sizes.s5),
-                                  textCommon.regularLightText12(text: "/${e.value.data()["type"]}")
-                                ])).planExtension(e.key == subscribeCtrl.selectedPlan
+                                  textCommon.regularLightText12(
+                                      text: "/${e.value.data()["type"]}")
+                                ])).planExtension(e.key ==
+                                    subscribeCtrl.selectedPlan
                                 ? appCtrl.appTheme.primaryLight2
                                 : appCtrl.appTheme.sameWhite)),
                         Text(
@@ -56,9 +61,10 @@ class PlanListCommon extends StatelessWidget {
                                     .replaceAll("-", "\n"),
                                 textAlign: TextAlign.center,
                                 style: AppCss.outfitMedium12
-                                    .textColor(e.key == subscribeCtrl.selectedPlan
-                                        ? appCtrl.appTheme.sameWhite
-                                        : appCtrl.appTheme.primary)
+                                    .textColor(
+                                        e.key == subscribeCtrl.selectedPlan
+                                            ? appCtrl.appTheme.sameWhite
+                                            : appCtrl.appTheme.primary)
                                     .textHeight(1.2))
                             .paddingSymmetric(vertical: Insets.i8)
                       ]))),
@@ -67,7 +73,8 @@ class PlanListCommon extends StatelessWidget {
                     .paddingAll(Insets.i8)
                     .decorated(
                         color: appCtrl.appTheme.primary, shape: BoxShape.circle)
-            ]).inkWell(onTap: () => subscribeCtrl.onSelectPlan(e.key, e.value));
+            ]).marginSymmetric(horizontal: Insets.i5).inkWell(
+                onTap: () => subscribeCtrl.onSelectPlan(e.key, e.value));
           }).toList()
         ]).marginSymmetric(horizontal: Insets.i10),
       );

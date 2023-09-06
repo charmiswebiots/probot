@@ -1,4 +1,3 @@
-import 'dart:developer';
 import '../../../../config.dart';
 
 class AfterSubscribe extends StatelessWidget {
@@ -22,8 +21,6 @@ class AfterSubscribe extends StatelessWidget {
               builder: (context, snapShot) {
                 if (snapShot.hasData) {
                   if (snapshot.hasData) {
-                    log("CHEK : ${snapshot.hasData}");
-                    log("CHEK : ${snapShot.hasData}");
                     return Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [

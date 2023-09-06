@@ -71,7 +71,11 @@ class SettingController extends GetxController {
             .get()
             .then((value) {
           if (value.docs.isNotEmpty) {
-            Get.toNamed(routeName.subscriptionPlan);
+            if(value.docs[0].data()["isSubscribe"] == false) {
+              Get.toNamed(routeName.subscriptionPlanList);
+            }else{
+              Get.toNamed(routeName.subscriptionPlan);
+            }
           } else {
             Get.toNamed(routeName.subscriptionPlanList);
           }

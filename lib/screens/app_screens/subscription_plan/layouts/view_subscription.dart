@@ -1,3 +1,5 @@
+import "dart:developer";
+
 import "../../../../config.dart";
 
 class ViewSubscription extends StatelessWidget {
@@ -41,15 +43,23 @@ class ViewSubscription extends StatelessWidget {
                         builder: (context, snapShot) {
                           if (snapShot.hasData) {
                             return Column(children: [
-                              ...snapshot.data!.docs.asMap().entries.map((e) {
+                              ...snapshot.data!
+                                  .docs
+                                  .asMap()
+                                  .entries
+                                  .map((e) {
                                 SubscribeModel subscribe =
-                                    SubscribeModel.fromJson(e.value.data());
+                                SubscribeModel.fromJson(e.value.data());
                                 return ViewSubscriptionLayout(
-                                        data: e.value.data(),
-                                        onTap: () =>
-                                            subscribeCtrl.onTapPlan(e.value),
-                                        snapShot: snapShot,
-                                        subscribe: subscribe)
+                                    data: e.value.data(),
+                                    cancelOnTap: () =>
+                                        subscribeCtrl.onTapCancelSubscription(
+                                            snapShot.data!.docs[0]
+                                                .data()["subscriptionId"],snapShot.data!.docs[0].id),
+                                    onTap: () =>
+                                        subscribeCtrl.onTapPlan(e.value),
+                                    snapShot: snapShot,
+                                    subscribe: subscribe)
                                     .planListExtension()
                                     .marginOnly(bottom: Insets.i20);
                               }).toList()

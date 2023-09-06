@@ -1,12 +1,14 @@
 import 'dart:developer';
 import 'dart:io';
+
 import '../../bot_api/api_services.dart';
 import '../../config.dart';
 
-class TranslateController extends GetxController with GetSingleTickerProviderStateMixin  {
+class TranslateController extends GetxController
+    with GetSingleTickerProviderStateMixin {
   TextEditingController transController = TextEditingController();
   TextEditingController transCompleteController = TextEditingController();
-  bool isTranslated = false;
+  bool isTranslated = false, isListenFirst = false, isToListen = false;
   final FlutterTts? flutterTts = FlutterTts();
   bool isLoader = false;
   dynamic selectItem;
@@ -14,7 +16,7 @@ class TranslateController extends GetxController with GetSingleTickerProviderSta
   dynamic onFromSelect;
   dynamic onToSelect;
   String? response = '';
-  int value = 0;
+  int value = 39;
 
   AnimationController? animationController;
   Animation? animation;
@@ -31,7 +33,7 @@ class TranslateController extends GetxController with GetSingleTickerProviderSta
 
   final _isSpeech = false.obs;
   final isListening = false.obs;
-  int toValue = 0;
+  int toValue = 58;
   List<String> translateLanguagesList = [];
   final FixedExtentScrollController? fromScrollController =
       FixedExtentScrollController();
@@ -56,7 +58,7 @@ class TranslateController extends GetxController with GetSingleTickerProviderSta
     log("SHOW BANNER");
     currentAd = FacebookBannerAd(
       // placementId: "YOUR_PLACEMENT_ID",
-      placementId:  Platform.isAndroid
+      placementId: Platform.isAndroid
           ? appCtrl.firebaseConfigModel!.facebookAddAndroidId!
           : appCtrl.firebaseConfigModel!.facebookAddIOSId!,
       bannerSize: BannerSize.STANDARD,
@@ -94,7 +96,6 @@ class TranslateController extends GetxController with GetSingleTickerProviderSta
 
   @override
   void onReady() {
-
     appCtrl.firebaseConfigModel = FirebaseConfigModel.fromJson(
         appCtrl.storage.read(session.firebaseConfig));
     log("BANNER: ${appCtrl.firebaseConfigModel!}");
@@ -139,14 +140,29 @@ class TranslateController extends GetxController with GetSingleTickerProviderSta
         AnimationController(vsync: this, duration: const Duration(seconds: 2));
     animationController!.repeat(reverse: true);
     animation = Tween(begin: 15.0, end: 24.0).animate(animationController!)
-      ..addListener(() {
+      ..addListener(() async {
+        if (fromScrollController!.hasClients) {
+          if (isListenFirst == false) {
+            fromScrollController!.jumpToItem(value);
+            isListenFirst = true;
+          }
+        }
+        if (toScrollController!.hasClients) {
+
+          if (isToListen == false) {
+            toScrollController!.jumpToItem(toValue);
+            isToListen = true;
+          }
+        }
         update();
       });
     update();
+
+    fromScrollController!.addListener(() {});
+    toScrollController!.addListener(() {});
     // TODO: implement onReady
     super.onReady();
   }
-
 
   //stop speech method
   speechStopMethod() async {
@@ -209,9 +225,8 @@ class TranslateController extends GetxController with GetSingleTickerProviderSta
     super.dispose();
   }
 
-
-  onTranslate () {
-    if(transController.text.isNotEmpty) {
+  onTranslate() {
+    if (transController.text.isNotEmpty) {
       int balance = appCtrl.envConfig["balance"];
       bool isLocalChatApi = appCtrl.storage.read(session.isChatGPTKey) ?? false;
       if (balance == 0 && isLocalChatApi == false) {
@@ -220,22 +235,19 @@ class TranslateController extends GetxController with GetSingleTickerProviderSta
         addCtrl.onInterstitialAdShow();
         isLoader = true;
         ApiServices.chatCompeletionResponse(
-            "Translate ${transController.text} from ${onFromSelect ??
-                appFonts.english} to ${onToSelect ?? appFonts.hindi} language")
+                "Translate ${transController.text} from ${onFromSelect ?? appFonts.english} to ${onToSelect ?? appFonts.hindi} language")
             .then((value) {
-              if (value != "") {
-                response = value;
-                update();
-                isTranslated = true;
-                isLoader = false;
-                update();
-              } else {
-                isLoader = false;
-                snackBarMessengers(
-                  message: appFonts.somethingWentWrong.tr
-                );
-                update();
-              }
+          if (value != "") {
+            response = value;
+            update();
+            isTranslated = true;
+            isLoader = false;
+            update();
+          } else {
+            isLoader = false;
+            snackBarMessengers(message: appFonts.somethingWentWrong.tr);
+            update();
+          }
         });
         update();
       }
@@ -259,6 +271,7 @@ class TranslateController extends GetxController with GetSingleTickerProviderSta
 
   // from languages list
   onFromLanguageSheet() {
+    fromScrollController!.jumpToItem(value);
     Get.bottomSheet(
       isScrollControlled: true,
       backgroundColor: appCtrl.appTheme.white,
@@ -274,7 +287,8 @@ class TranslateController extends GetxController with GetSingleTickerProviderSta
               return StateService.getSuggestions(value, translateLanguagesList);
             },
             onSuggestionSelected: (i) {
-              int index = translateCtrl.translateLanguagesList.indexWhere((element) {
+              int index =
+                  translateCtrl.translateLanguagesList.indexWhere((element) {
                 return element == i;
               });
               translateCtrl.fromScrollController!.jumpToItem(index);
@@ -286,7 +300,7 @@ class TranslateController extends GetxController with GetSingleTickerProviderSta
             onSelectedItemChanged: (i) {
               value = i;
               selectItem = translateLanguagesList[i];
-              log("SELECT ITEM: $selectItem");
+
               update();
               translateCtrl.update();
             },
@@ -307,6 +321,7 @@ class TranslateController extends GetxController with GetSingleTickerProviderSta
 
   // to language list
   onToLanguageSheet() {
+    toScrollController!.jumpToItem(toValue);
     Get.bottomSheet(
       isScrollControlled: true,
       backgroundColor: appCtrl.appTheme.white,
@@ -320,15 +335,16 @@ class TranslateController extends GetxController with GetSingleTickerProviderSta
             suggestionsCallbacks: (value) {
               return StateService.getSuggestions(value, translateLanguagesList);
             },
+            thumbScrollController: thumbScrollController,
             onSelectedItemChanged: (i) {
               toValue = i;
               toSelectItem = translateLanguagesList[i];
-              log("SELECT ITEM: $toSelectItem");
               update();
               translateCtrl.update();
             },
             onSuggestionSelected: (i) {
-              int index = translateCtrl.translateLanguagesList.indexWhere((element) {
+              int index =
+                  translateCtrl.translateLanguagesList.indexWhere((element) {
                 return element == i;
               });
               translateCtrl.toScrollController!.jumpToItem(index);
@@ -352,6 +368,7 @@ class TranslateController extends GetxController with GetSingleTickerProviderSta
       ),
     );
   }
+
   @override
   void onClose() {
     animationController!.dispose();

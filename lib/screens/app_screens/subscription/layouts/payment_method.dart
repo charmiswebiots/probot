@@ -3,12 +3,14 @@ import 'dart:io';
 import '../../../../config.dart';
 import 'package:in_app_purchase_android/in_app_purchase_android.dart';
 import '../../../../controllers/common_controllers/in_app_controller.dart';
+import '../../card_screen/card_screen.dart';
 
 class PaymentList extends StatelessWidget {
   final String? data;
   final SubscribeModel? subscribe;
+  final dynamic argData;
 
-  const PaymentList({Key? key, this.data, this.subscribe}) : super(key: key);
+  const PaymentList({Key? key, this.data, this.subscribe,this.argData}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -132,12 +134,14 @@ class PaymentList extends StatelessWidget {
                                           Get.back();
                                         } else if (subscribeCtrl.selectIndexPayment ==
                                             1) {
-                                          log("SUBSCRIBE $subscribe");
+                                          // log("SUBSCRIBE $subscribe");
+                                          //  Get.back();
+                                          // Get.to(() => CardScreen(subscribeModel: subscribe),arguments: argData);
                                           subscribeCtrl.stripePayment(
                                               amount: data!,
                                               currency: 'INR',
                                               subscribe: subscribe);
-                                          Get.back();
+
                                         } else if (subscribeCtrl.selectIndexPayment ==
                                             2) {
                                           subscribeCtrl.openSession(

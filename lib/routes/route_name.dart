@@ -72,6 +72,7 @@ class RouteName {
   final String amazonProductReviewScreen = "/amazonProductReviewScreen";
   final String amazonProductTitleScreen = "/amazonProductTitleScreen";
   final String ecommerceDetailsScreen = "/ecommerceDetailsScreen";
+  final String cardScreen = "/cardScreen";
 
 
 }
