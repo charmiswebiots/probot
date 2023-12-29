@@ -1,6 +1,6 @@
 import '../config.dart';
 
-class AppAppBarCommon extends StatelessWidget with PreferredSizeWidget {
+class AppAppBarCommon extends StatelessWidget implements PreferredSizeWidget {
   final GestureTapCallback? actionOnTap, leadingOnTap;
   final String? title, actionIcon;
   final bool isAction,isBalanceShow;

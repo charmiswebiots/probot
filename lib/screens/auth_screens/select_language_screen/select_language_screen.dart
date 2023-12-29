@@ -10,7 +10,6 @@ class SelectLanguageScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetBuilder<SelectLanguageController>(builder: (_) {
       return WillPopScope(
-
           onWillPop: () async {
             if (languageCtrl.isBack) {
               Get.back();
@@ -54,7 +53,6 @@ class SelectLanguageScreen extends StatelessWidget {
                             } else if (e.value.code == "ge") {
                               appCtrl.languageVal = "ge";
                             }
-
                             appCtrl.update();
                             await appCtrl.storage
                                 .write("index", languageCtrl.selectIndex);

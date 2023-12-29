@@ -39,7 +39,7 @@ class _MyAppState extends State<MyApp> {
     return StreamBuilder(
         stream: Connectivity().onConnectivityChanged,
         builder: (context, AsyncSnapshot<ConnectivityResult> statusSnapshot) {
-          log("STATUS : ${statusSnapshot.data}");
+
 
           return  GetMaterialApp(
                   themeMode: ThemeService().theme,

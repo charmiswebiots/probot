@@ -154,30 +154,33 @@ class CodeGeneratorController extends GetxController with GetSingleTickerProvide
   onCodeGenerate () {
     if(codeController.text.isNotEmpty) {
       int balance = appCtrl.envConfig["balance"];
-      if (balance == 0) {
-        appCtrl.balanceTopUpDialog();
-      } else {
-        addCtrl.onInterstitialAdShow();
-        isLoader = true;
-        ApiServices.chatCompeletionResponse(
-            "Write a code for ${codeController.text} in ${onSelect ??
-                "C#"} language").then((value) {
-                  if (value != "") {
-                  response = value;
-                  isCodeGenerate = true;
-                  isLoader = false;
-                  update();
-                  } else {
-                    isLoader = false;
-                    snackBarMessengers(
-                      message: appFonts.somethingWentWrong.tr
-                    );
-                    update();
-                  }
-        });
-        codeController.clear();
-        update();
-      }
+      bool isLocalChatApi = appCtrl.storage.read(session.isChatGPTKey) ?? false;
+
+        if (balance == 0  && isLocalChatApi == false) {
+          appCtrl.balanceTopUpDialog();
+        } else {
+          addCtrl.onInterstitialAdShow();
+          isLoader = true;
+          ApiServices.chatCompeletionResponse(
+              "Write a code for ${codeController.text} in ${onSelect ??
+                  "C#"} language").then((value) {
+            if (value != "") {
+              response = value;
+              isCodeGenerate = true;
+              isLoader = false;
+              update();
+            } else {
+              isLoader = false;
+              snackBarMessengers(
+                  message: appFonts.somethingWentWrong.tr
+              );
+              update();
+            }
+          });
+          codeController.clear();
+          update();
+        }
+
     } else {
       Get.snackbar(appFonts.attention.tr, appFonts.enterTextBoxValue.tr);
     }

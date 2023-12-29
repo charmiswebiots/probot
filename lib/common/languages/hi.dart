@@ -751,4 +751,16 @@ final dynamic hi = {
   'yourFingerprintHasBeen' : "आपका फ़िंगरप्रिंट सफलतापूर्वक जोड़ दिया गया है।",
   'done' : "पूर्ण",
 
+  'paidAmount' : "चुकाई गई राशि :",
+  'including' : "शामिल :",
+  'unlimitedChatImage' : "असीमित चैट, चित्र और सामग्री",
+  'expiryDate' : "समाप्ति तिथि :",
+  'unlimitedChatForMonth' : "एक महीने के लिए असीमित चैट",
+  'unlimitedImage' : "एक महीने के लिए असीमित छवि निर्माण",
+  'unlimitedContent' : "एक महीने के लिए असीमित सामग्री लेखन",
+  'selectThisPlan' : "इस योजना का चयन करें",
+  'youCanTopUp' : "आप वीडियो देखकर\nअपना बैलेंस टॉप-अप कर सकते हैं",
+  'youCanPurchase' : "आप जितने चाहें उतने सिक्के\na खरीद सकते हैं।",
+  'flutterWave': "फ्लटर वेव",
+  'payStack': "पेस्टैक",
 };

@@ -2,7 +2,7 @@ import 'package:flutter/services.dart';
 
 import '../config.dart';
 
-class AppBarCommon extends StatelessWidget with PreferredSizeWidget {
+class AppBarCommon extends StatelessWidget implements PreferredSizeWidget {
   final bool isArrow,isSystemNavigate;
   const AppBarCommon({Key? key,this.isArrow = true,this.isSystemNavigate = false}) : super(key: key);
 

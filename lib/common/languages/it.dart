@@ -751,4 +751,17 @@ final dynamic it = {
   'pressTheSensor' : "Premi il sensore e sollevalo quando senti la vibrazione",
   'yourFingerprintHasBeen' : "La tua impronta digitale è stata aggiunta correttamente.",
   'done' : "Fatto",
+
+  'paidAmount' : "Importo pagato :",
+  'including' : "Compreso :",
+  'unlimitedChatImage' : "Chat, immagini e contenuti illimitati",
+  'expiryDate' : "Data di scadenza :",
+  'unlimitedChatForMonth' : "Chat illimitata per un mese",
+  'unlimitedImage' : "Generazione illimitata di immagini per un mese",
+  'unlimitedContent' : "Scrittura di contenuti illimitata per un mese",
+  'selectThisPlan' : "Seleziona questo piano",
+  'youCanTopUp' : "Puoi ricaricare il tuo saldo sia\nguardando un video",
+  'youCanPurchase' : "Puoi acquistare tutte le monete\nche desideri.",
+  'flutterWave': "Onda svolazzante",
+  'payStack': "Pacco paga",
 };

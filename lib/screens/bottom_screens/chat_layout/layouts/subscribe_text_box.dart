@@ -25,7 +25,7 @@ class SubscribeTextBox extends StatelessWidget {
                     const VSpace(Sizes.s10),
                   ],
                 )
-              : balance != 0
+              : /*balance != 0
                   ? Column(
                       children: [
                         Text(
@@ -40,8 +40,8 @@ class SubscribeTextBox extends StatelessWidget {
                         const VSpace(Sizes.s10),
                       ],
                     )
-                  : Container(),
-          if (appCtrl.envConfig["balance"] == 0)
+                  :*/ Container(),
+          if (appCtrl.isLocalChatApi == false && appCtrl.envConfig["balance"] == 0)
             LimitOverLayout(onTap: () {
               if (appCtrl.firebaseConfigModel!.isGoogleAdmobEnable!) {
                 appCtrl.showRewardedAd();
@@ -49,7 +49,7 @@ class SubscribeTextBox extends StatelessWidget {
                 appCtrl.showFacebookRewardedAd();
               }
             }),
-          if (appCtrl.envConfig["balance"] != 0) const ChatLayoutTextBox()
+          if (appCtrl.isLocalChatApi == true || appCtrl.envConfig["balance"] != 0) const ChatLayoutTextBox()
         ],
       );
     });

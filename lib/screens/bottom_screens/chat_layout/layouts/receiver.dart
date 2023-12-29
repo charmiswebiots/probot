@@ -15,7 +15,7 @@ class Receiver extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return GetBuilder<ChatLayoutController>(builder: (chatCtrl) {
-log("MESSAGE ${chatListModel["message"]}");
+
       return Align(
           alignment: Alignment.centerLeft,
           child: Row(
@@ -35,11 +35,13 @@ log("MESSAGE ${chatListModel["message"]}");
                         children: [
                           /*chatListModel["createdDate"].toString()*/
                           /*chatListModel["message"]*/
+                          chatListModel["message"] != null ?
                           chatListModel["message"].length > 40
                               ? ReceiverWidthText(
                             text: chatListModel["message"],width: Sizes.s250,time: chatListModel["createdDate"])
                               : ReceiverWidthText(
-                              text: chatListModel["message"],width: Sizes.s200,time: chatListModel["createdDate"]),
+                              text: chatListModel["message"],width: Sizes.s200,time: chatListModel["createdDate"]) : ReceiverWidthText(
+                              text: "",width: Sizes.s250,time: chatListModel["createdDate"]),
                           const HSpace(Sizes.s5)
 
                         ]

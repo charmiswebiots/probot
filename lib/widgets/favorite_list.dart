@@ -5,14 +5,14 @@ class FavoriteList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<HomeController>(
+    return GetBuilder<QuickAdvisorController>(
       builder: (homeCtrl) {
         return GridView.builder(
             padding: EdgeInsets.zero,
             physics:
             const NeverScrollableScrollPhysics(),
             shrinkWrap: true,
-            itemCount: homeCtrl.quickAdvisorCtrl
+            itemCount: homeCtrl
                 .favoriteDataList.length,
             gridDelegate:
             const SliverGridDelegateWithFixedCrossAxisCount(
@@ -26,12 +26,10 @@ class FavoriteList extends StatelessWidget {
                   index: index,
                   isFavorite: true,
                   selectIndex: homeCtrl
-                      .quickAdvisorCtrl
                       .selectedIndexRemove,
-                  data: homeCtrl.quickAdvisorCtrl
+                  data: homeCtrl
                       .favoriteDataList[index],
                   onTap: () => homeCtrl
-                      .quickAdvisorCtrl
                       .onTapRemoveFavorite(
                       index));
             });

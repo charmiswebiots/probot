@@ -101,7 +101,7 @@ class AppFonts {
   String am10 = "am10";
   String am9 = "am9";
   String youDontHave = "youDontHave";
-  String noDataFound = "No History found";
+  String noDataFound = "noDataFound";
   String refresh = "refresh";
   String whatsapp = "whatsapp";
   String insta = "insta";
@@ -681,11 +681,9 @@ class AppFonts {
   String inputApiKey = "inputApiKey";
   String planPeriod = "planPeriod";
 
-  String thereAreAwardLeft(val) =>
-      "thereAreAwardLeft".trParams({'awardLeft': val});
+  String thereAreAwardLeft(val) => "thereAreAwardLeft".trParams({'awardLeft': val});
 
-  String totalCoinsAvailable(val) =>
-      "totalCoinsAvailable".trParams({'totalCoins': val});
+  String totalCoinsAvailable(val) => "totalCoinsAvailable".trParams({'totalCoins': val});
   String endWellWishes = "endWellWishes";
   String areYouSureEndWell = "areYouSureEndWell";
   String sendingBestWishes = "sendingBestWishes";
@@ -708,5 +706,21 @@ class AppFonts {
   String imageUploadSuccessfully = "imageUploadSuccessfully";
   String invalidApiKey = "invalidApiKey";
 
+  String paidAmount = "paidAmount";
+  String including = "including";
+  String unlimitedChatImage = "unlimitedChatImage";
+  String expiryDate = "expiryDate";
+  String unlimitedChatForMonth = "unlimitedChatForMonth";
+  String unlimitedImage = "unlimitedImage";
+  String unlimitedContent = "unlimitedContent";
+  String selectThisPlan = "selectThisPlan";
+  String youCanTopUp = "youCanTopUp";
+  String youCanPurchase = "youCanPurchase";
+  String flutterWave = "flutterWave";
+  String payStack = "payStack";
+  String cancelSubscription = "Cancel Subscription";
+  String cancelNote = "Once You Cancel Subscription Your Money Is Not Refundable";
+  String areYouSureCancelSubscription = "Are You Sure Want To Cancel Subscription ?";
+  String successfullyCancelSubscription = "Successfully Cancel Subscription";
 
 }

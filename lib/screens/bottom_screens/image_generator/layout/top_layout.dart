@@ -15,7 +15,7 @@ class TopLayout extends StatelessWidget {
             fillColor: appCtrl.appTheme.surface,
             prefixIcon:
                 SvgPicture.asset(eSvgAssets.search, fit: BoxFit.scaleDown)
-                    .inkWell(onTap: () {}),
+                    .inkWell(onTap: () {})
            ).authBoxExtension(),
         const VSpace(Sizes.s10),
         SizedBox(

@@ -730,4 +730,18 @@ final dynamic ja = {
   'pressTheSensor' : "振動を感じたらセンサーを押し上げます",
   'yourFingerprintHasBeen' : "指紋が正常に追加されました。",
   'done' : "終わり",
+
+  'paidAmount' : "支払金額 ：",
+  'including' : "含む ：",
+  'unlimitedChatImage' : "無制限のチャット、画像、コンテンツ",
+  'expiryDate' : "有効期限 ：",
+  'unlimitedChatForMonth' : "1か月間チャット無制限",
+  'unlimitedImage' : "1 か月間無制限の画像生成",
+  'unlimitedContent' : "1 か月間無制限のコンテンツ書き込み",
+  'selectThisPlan' : "このプランを選択してください",
+  'youCanTopUp' : "残高は\nビデオを視聴することで補充できます",
+  'youCanPurchase' : "必要なだけコインを\n購入できます。",
+  'flutterWave': "フラッターウェーブ",
+  'payStack': "給与スタック",
+
 };

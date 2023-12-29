@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import '../../config.dart';
 
 class SelectLanguageController extends GetxController {
@@ -34,7 +32,7 @@ class SelectLanguageController extends GetxController {
         .map((e) => SelectLanguageModel.fromJson(e))
         .toList();
     update();
-    log("isBack : $isBack");
+
     // TODO: implement onReady
     super.onReady();
   }

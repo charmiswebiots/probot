@@ -45,12 +45,12 @@ class HomeController extends GetxController {
               : appCtrl.firebaseConfigModel!.bannerIOSId!,
           listener: BannerAdListener(
             onAdLoaded: (Ad ad) {
-              log('$BannerAd loaded.');
+
               bannerAdIsLoaded = true;
               update();
             },
             onAdFailedToLoad: (Ad ad, LoadAdError error) {
-              log('$BannerAd failedToLoad: $error');
+
               ad.dispose();
             },
             onAdOpened: (Ad ad) => log('$BannerAd onAdOpened.'),
@@ -58,7 +58,7 @@ class HomeController extends GetxController {
           ),
           request: const AdRequest())
         ..load();
-      log("Home Banner : $bannerAd");
+
     } else {
       bannerAd!.dispose();
       buildBanner();
@@ -136,7 +136,7 @@ class HomeController extends GetxController {
 
   getFavData() async {
     List<dynamic> favList = appCtrl.storage.read("favList") ?? [];
-    log("FAVE : $favList");
+
     if (favList.isNotEmpty) {
       favList.asMap().entries.forEach((element) {
         if (element.value["title"] == "askAnything") {
@@ -209,17 +209,17 @@ class HomeController extends GetxController {
   }
 
   _showBannerAd() {
-    log("SHOW BANNER");
+
     currentAd = FacebookBannerAd(
       // placementId: "YOUR_PLACEMENT_ID",
       placementId: appCtrl.firebaseConfigModel!.facebookAddAndroidId!,
       bannerSize: BannerSize.STANDARD,
       listener: (result, value) {
-        log("Banner Ad: $result -->  $value");
+
       },
     );
     update();
-    log("_currentAd : $currentAd");
+
   }
 
   buildBanner() async {
@@ -230,12 +230,12 @@ class HomeController extends GetxController {
             : appCtrl.firebaseConfigModel!.bannerIOSId!,
         listener: BannerAdListener(
           onAdLoaded: (Ad ad) {
-            log('$BannerAd loaded.');
+
             bannerAdIsLoaded = true;
             update();
           },
           onAdFailedToLoad: (Ad ad, LoadAdError error) {
-            log('$BannerAd failedToLoad: $error');
+
             ad.dispose();
           },
           onAdOpened: (Ad ad) => log('$BannerAd onAdOpened.'),
@@ -243,12 +243,12 @@ class HomeController extends GetxController {
         ),
         request: const AdRequest())
       ..load();
-    log("Home Banner AGAIn: $bannerAd");
+
   }
 
   //on option tap function
   onOptionTap(data) {
-    log("TITLE : $data");
+
     final dashboardCtrl = Get.find<DashboardController>();
     if (data.title == "option1") {
       dashboardCtrl.onBottomTap(1);

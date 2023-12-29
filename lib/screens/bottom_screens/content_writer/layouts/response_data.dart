@@ -1,5 +1,6 @@
 
-import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
+
+import 'dart:developer';
 
 import '../../../../config.dart';
 
@@ -10,6 +11,7 @@ class ResponseData extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetBuilder<ContentWriterController>(
       builder: (contentCtrl) {
+        log("message : ${contentCtrl.htmlData}");
         return RawScrollbar(
           controller: contentCtrl.scrollController,
           trackColor: appCtrl.appTheme.greyLight,
@@ -20,14 +22,15 @@ class ResponseData extends StatelessWidget {
               controller: contentCtrl.scrollController,
               padding: EdgeInsets.zero,
               children: [
-                HtmlWidget(
-                  contentCtrl.htmlData,
-                  textStyle: AppCss.outfitMedium14
-                      .textColor(appCtrl.appTheme.txt)
-                      .textHeight(1.5),
-                ).paddingAll(Insets.i20).decorated(
-                    color: appCtrl.appTheme.bg1,
-                    borderRadius: BorderRadius.circular(AppRadius.r6)),
+                AnimatedTextKit(
+                    isRepeatingAnimation: false,
+                    animatedTexts: [
+                      TyperAnimatedText(contentCtrl.htmlData,
+                          textStyle: AppCss.outfitMedium14
+                              .textColor(appCtrl.appTheme.txt)
+                              .textHeight(1.3),
+                          speed: const Duration(milliseconds: 50))
+                    ]).paddingAll(Insets.i15).backgroundColor(appCtrl.appTheme.bg1),
               ]).height(contentCtrl.htmlData.length > 350
               ? Sizes.s350
               : contentCtrl.htmlData.length > 200

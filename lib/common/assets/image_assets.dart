@@ -73,6 +73,15 @@ class ImageAssets {
   final String serious = "assets/images/icons/serious.png";
   final String linkedin = "assets/images/icons/linkedin.png";
   final String youtube = "assets/images/icons/youtube.png";
+  final String flutterWave = "assets/images/icons/flutterWave.png";
+  final String paystack = "assets/images/icons/paystack.png";
+  final String visa = "assets/images/icons/visa.png";
+  final String discover = "assets/images/icons/discover.png";
+  final String americanExpress = "assets/images/icons/americanExpress.png";
+  final String diners = "assets/images/icons/diners.png";
+  final String jcb = "assets/images/icons/jcb.png";
+  final String masterCard = "assets/images/icons/masterCard.png";
+  final String verve = "assets/images/icons/verve.png";
 
   // chat
   final String chat1 = "assets/images/chat/chat1.png";

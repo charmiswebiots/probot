@@ -1,7 +1,4 @@
 import 'dart:developer';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:probot/env.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
@@ -33,7 +30,7 @@ class SignInController extends GetxController {
     try {
       appCtrl.isGuestLogin = false;
       appCtrl.storage.write(session.isGuestLogin, false);
-      log("message");
+
       isLoading = true;
       update();
       final FirebaseAuth auth = FirebaseAuth.instance;
@@ -86,7 +83,7 @@ class SignInController extends GetxController {
           await FirebaseMessaging.instance.getToken().then((token) async {
             bool isResult  =result.docs[0].data()["isActive"] ?? true;
             if (isResult) {
-              log("BANCE :${result.docs[0].data()["balance"] == null}");
+
               if (result.docs[0].data()["balance"] == null) {
                 appCtrl.envConfig["balance"] =  appCtrl.firebaseConfigModel!.balance;
               } else {
@@ -151,7 +148,6 @@ class SignInController extends GetxController {
               .limit(1)
               .get()
               .then((value) async {
-            log("doc ${value.docs.isEmpty}");
             if (value.docs.isEmpty) {
               // Update data to server if new user
               FirebaseFirestore.instance
@@ -179,7 +175,7 @@ class SignInController extends GetxController {
             } else {
               bool isResult  =value.docs[0].data()["isActive"] ?? true;
               if (isResult) {
-                log("BANCE :${value.docs[0].data()["balance"] == null}");
+
                 if (value.docs[0].data()["balance"] == null) {
                   appCtrl.envConfig["balance"] =  appCtrl.firebaseConfigModel!.balance;
                 } else {
@@ -252,13 +248,13 @@ class SignInController extends GetxController {
         nonce: nonce,
       );
 
-      log("CRED : $appleCredential");
+
       final oauthCredential = OAuthProvider("apple.com").credential(
           idToken: appleCredential.identityToken,
           rawNonce: rawNonce,
           accessToken: appleCredential.authorizationCode);
 
-      log("AUTH : $oauthCredential");
+
       update();
 
       await FirebaseAuth.instance
@@ -274,7 +270,7 @@ class SignInController extends GetxController {
               .limit(1)
               .get()
               .then((value) async {
-            log("doc ${value.docs.isEmpty}");
+
             if (value.docs.isEmpty) {
               // Update data to server if new user
               FirebaseFirestore.instance
@@ -301,7 +297,7 @@ class SignInController extends GetxController {
             } else {
               bool isResult  =value.docs[0].data()["isActive"] ?? true;
               if (isResult) {
-                log("BANCE :${value.docs[0].data()["balance"] == null}");
+
                 if (value.docs[0].data()["balance"] == null) {
                   appCtrl.envConfig["balance"] =  appCtrl.firebaseConfigModel!.balance;
                 } else {
@@ -347,7 +343,7 @@ class SignInController extends GetxController {
       isLoading = false;
       update();
 
-      log("ERROR CATHC ; $e");
+
     }
   }
 
@@ -359,7 +355,6 @@ class SignInController extends GetxController {
         .get()
         .then((value) {
       if (value.docs.isNotEmpty) {
-        log("DATA : ${value.docs[0].data()}");
         if (value.docs[0].data()["isSubscribe"] == false) {
           appCtrl.envConfig["balance"] = value.docs[0].data()["balance"];
           appCtrl.storage.write(session.envConfig, appCtrl.envConfig);

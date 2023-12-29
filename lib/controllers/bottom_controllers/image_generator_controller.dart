@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 import '../../config.dart';
 import 'package:http/http.dart' as http;
 
@@ -30,7 +29,6 @@ class ImageGeneratorController extends GetxController {
 
   Future getGPTImage(
       {String? imageText, String? size = "256x256"}) async {
-    log("imageText: $imageText");
 
     try {
       int balance = appCtrl.envConfig["balance"];
@@ -50,12 +48,10 @@ class ImageGeneratorController extends GetxController {
         String localApi = appCtrl.storage.read(session.chatGPTKey) ?? "";
         String apiKey = "";
         if (localApi == "") {
-          // apiKey = appCtrl.firebaseConfigModel!.chatGPTKey!;
           apiKey = appCtrl.firebaseConfigModel!.chatGPTKey!;
         } else {
           apiKey = localApi;
         }
-        log("API $apiKey");
         update();
         var request = await http.post(
           url,
@@ -71,7 +67,6 @@ class ImageGeneratorController extends GetxController {
             },
           ),
         );
-        log(request.body);
         if (request.statusCode == 200) {
           addCountImage();
           imageGPTModel = ImageModel.fromJson(jsonDecode(request.body));

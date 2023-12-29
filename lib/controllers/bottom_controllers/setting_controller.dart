@@ -1,10 +1,4 @@
-
-
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:launch_review/launch_review.dart';
-import 'package:share_plus/share_plus.dart';
-
 import '../../config.dart';
 
 class SettingController extends GetxController {
@@ -77,7 +71,11 @@ class SettingController extends GetxController {
             .get()
             .then((value) {
           if (value.docs.isNotEmpty) {
-            Get.toNamed(routeName.subscriptionPlan);
+            if(value.docs[0].data()["isSubscribe"] == false) {
+              Get.toNamed(routeName.subscriptionPlanList);
+            }else{
+              Get.toNamed(routeName.subscriptionPlan);
+            }
           } else {
             Get.toNamed(routeName.subscriptionPlanList);
           }

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:probot/config.dart';
 
 class DashboardController extends GetxController
@@ -69,7 +67,7 @@ class DashboardController extends GetxController
         if (appCtrl.firebaseConfigModel!.isGoogleAdmobEnable!) {
           chatLayoutCtrl.showInterstitialAd();
         } else {
-          log("FB");
+
           chatLayoutCtrl.loadInterstitialAd();
           //chatLayoutCtrl.showFbInterstitialAd();
         }

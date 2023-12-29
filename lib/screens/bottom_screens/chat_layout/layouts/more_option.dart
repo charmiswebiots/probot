@@ -1,7 +1,4 @@
-
 import 'dart:developer';
-import 'package:share_plus/share_plus.dart';
-
 import '../../../../config.dart';
 
 class MoreOption extends StatelessWidget {

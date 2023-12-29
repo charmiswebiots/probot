@@ -112,16 +112,16 @@ class ChatHistoryController extends GetxController {
         .collection("chats")
         .orderBy("createdDate", descending: true)
         .get()
-        .then((value) {
-      value.docs.asMap().entries.forEach((element) {
+        .then((value)  {
+      value.docs.asMap().entries.forEach((element) async {
         if (selectedIndex
             .contains(element.value.id)) {
-          FirebaseFirestore.instance
+          await FirebaseFirestore.instance
               .collection("chatHistory")
               .doc(element.value.id)
               .delete()
-              .then((value) {
-            FirebaseFirestore.instance
+              .then((value) async {
+           await FirebaseFirestore.instance
                 .collection("users")
                 .doc(FirebaseAuth.instance.currentUser!.uid)
                 .collection("chats")

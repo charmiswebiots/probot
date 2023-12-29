@@ -2,7 +2,7 @@ import 'dart:developer';
 import '../../../../config.dart';
 import 'after_history_select_layout.dart';
 
-class ChatHistoryAppBar extends StatelessWidget with PreferredSizeWidget {
+class ChatHistoryAppBar extends StatelessWidget implements PreferredSizeWidget {
   final List? index;
   final GestureTapCallback? onDeleteTap, onMenuTap;
 

@@ -27,16 +27,12 @@ class CurrencyListCard extends StatelessWidget {
                 .height(Sizes.s40)
                 .width(Sizes.s40),
             onTap: () async {
-              log(" data : $data");
               appCtrl.priceSymbol = data["symbol"].toString();
               subscribeCtrl.selectIndex = index!;
-              appCtrl.currency = await appCtrl.storage.read("currency");
+              appCtrl.currency = await appCtrl.storage.read("currency") ?? appArray.currencyList[0] ;
               await appCtrl.storage.write("currency", data);
               if (appCtrl.currency != data) {
-                appCtrl.currencyVal =
-                    double.parse(appCtrl.currency[data["code"]].toString());
-
-                log("CHANGE CURRENCY : ${appCtrl.currencyVal}");
+                appCtrl.currencyVal = double.parse(appCtrl.currency[data["code"]].toString());
                 appCtrl.update();
                 subscribeCtrl.update();
                 Get.forceAppUpdate();

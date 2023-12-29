@@ -56,6 +56,7 @@ class VoiceController extends GetxController {
                     chatCtrl.chatController.text = val.recognizedWords.toString();
                     chatCtrl.textInput.value = val.recognizedWords.toString();
                     chatCtrl.getChatId();
+                    chatCtrl.update();
                     update();
                   }
                   update();

@@ -117,6 +117,8 @@ class ImageScannerController extends GetxController {
             final chatCtrl = Get.isRegistered<ChatLayoutController>()
                 ? Get.find<ChatLayoutController>()
                 : Get.put(ChatLayoutController());
+            chatCtrl.chatController.text = recognizedText.text;
+            chatCtrl.textInput.value = recognizedText.text;
             chatCtrl.getChatId();
           }
         } else {

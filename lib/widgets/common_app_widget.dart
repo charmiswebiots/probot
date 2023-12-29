@@ -16,4 +16,31 @@ class CommonAppWidgets {
           style: AppCss.outfitRegular14.textColor(appCtrl.appTheme.txt))
     ],
   );
+
+  TableRow tableRow ()=> TableRow(
+      decoration: BoxDecoration(
+          color: appCtrl.appTheme.primaryLight2,
+          border: Border(
+              top: BorderSide(color: appCtrl.appTheme.primaryLightBorder),
+              bottom:
+              BorderSide(color: appCtrl.appTheme.primaryLightBorder))),
+      children: [
+        Text(appFonts.advantages.tr,
+            style: AppCss.outfitMedium16
+                .textColor(appCtrl.appTheme.primary))
+            .paddingSymmetric(horizontal: Insets.i20, vertical: Insets.i14),
+        Text(appFonts.free.tr,
+            textAlign: TextAlign.center,
+            style: AppCss.outfitMedium14
+                .textColor(appCtrl.appTheme.primary))
+            .paddingSymmetric(horizontal: Insets.i18, vertical: Insets.i14)
+            .tableExtension(),
+        Text(appFonts.pro.tr,
+            textAlign: TextAlign.center,
+            style: AppCss.outfitMedium16
+                .textColor(appCtrl.appTheme.primary))
+            .paddingSymmetric(horizontal: Insets.i18, vertical: Insets.i14)
+            .tableExtension()
+      ]);
+
 }

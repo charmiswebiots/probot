@@ -43,7 +43,7 @@ class _PaypalPaymentState extends State<PaypalPayment> {
       ..loadRequest(Uri.parse(widget.url!))
       ..setNavigationDelegate(
           NavigationDelegate(onNavigationRequest: (NavigationRequest request) {
-        log("Request: $request");
+        log("Request: ${request.url}");
         if (request.url.contains(widget.isSubscribe ? subscribeCtrl.returnURL : topUpCtrl.returnURL)) {
           final uri = Uri.parse(request.url);
           log("URI: $uri");

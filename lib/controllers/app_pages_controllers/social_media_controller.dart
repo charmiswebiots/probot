@@ -87,7 +87,8 @@ class SocialMediaController extends GetxController
   onCaptionGenerate() {
     if (captionController.text.isNotEmpty) {
       int balance = appCtrl.envConfig["balance"];
-      if (balance == 0) {
+      bool isLocalChatApi = appCtrl.storage.read(session.isChatGPTKey) ?? false;
+      if (balance == 0 && isLocalChatApi == false) {
         appCtrl.balanceTopUpDialog();
       } else {
         addCtrl.onInterstitialAdShow();
@@ -182,7 +183,8 @@ class SocialMediaController extends GetxController
 
   onMusicGenerate() {
     int balance = appCtrl.envConfig["balance"];
-    if (balance == 0) {
+    bool isLocalChatApi = appCtrl.storage.read(session.isChatGPTKey) ?? false;
+    if (balance == 0 && isLocalChatApi == false) {
       appCtrl.balanceTopUpDialog();
     } else {
       addCtrl.onInterstitialAdShow();
@@ -230,7 +232,8 @@ class SocialMediaController extends GetxController
   onHashtagGenerate() {
     if (hashtagController.text.isNotEmpty) {
       int balance = appCtrl.envConfig["balance"];
-      if (balance == 0) {
+      bool isLocalChatApi = appCtrl.storage.read(session.isChatGPTKey) ?? false;
+      if (balance == 0 && isLocalChatApi == false) {
         appCtrl.balanceTopUpDialog();
       } else {
         addCtrl.onInterstitialAdShow();

@@ -1,5 +1,4 @@
 import 'dart:developer';
-import 'package:probot/widgets/common_app_widget.dart';
 import '../config.dart';
 
 class BalanceAlertDialog extends StatelessWidget {
@@ -81,7 +80,6 @@ class BalanceAlertDialog extends StatelessWidget {
                         .limit(1)
                         .get()
                         .then((value) {
-                      log("DAA : ${value.docs[0].exists}");
                       if (value.docs.isNotEmpty) {
                         Get.toNamed(routeName.subscriptionPlan);
                       } else {

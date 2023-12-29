@@ -1,5 +1,4 @@
 // ignore_for_file: avoid_print
-
 import 'dart:convert';
 import 'dart:developer';
 import 'package:http/http.dart' as http;
@@ -8,34 +7,33 @@ import 'package:probot/config.dart';
 class ApiServices {
   static var client = http.Client();
   static List<Map<String, String>> conversationHistory = [];
-  static Future<String> chatCompeletionResponse(String prompt,{addApiKey}) async {
-    bool isLocalChatApi = appCtrl.storage.read(session.isChatGPTKey) ?? false;
-    if(appCtrl.isSubscribe == false || isLocalChatApi == false || addApiKey == null ) {
 
-      final firebaseCtrl =
-      Get.isRegistered<SubscriptionFirebaseController>()
-          ? Get.find<SubscriptionFirebaseController>()
-          : Get.put(SubscriptionFirebaseController());
-      firebaseCtrl.removeBalance();
-    }var url = Uri.https("api.openai.com", "/v1/chat/completions");
-    log("prompt : $prompt");
+  static Future<String> chatCompeletionResponse(String prompt,
+      {addApiKey}) async {
+    bool isLocalChatApi = appCtrl.storage.read(session.isChatGPTKey) ?? false;
+     if(isLocalChatApi == false && addApiKey == null){
+       if (appCtrl.isSubscribe == false ) {
+         final firebaseCtrl = Get.isRegistered<SubscriptionFirebaseController>()
+             ? Get.find<SubscriptionFirebaseController>()
+             : Get.put(SubscriptionFirebaseController());
+         firebaseCtrl.removeBalance();
+       }
+    }
+    var url = Uri.https("api.openai.com", "/v1/chat/completions");
 
     conversationHistory.add({"role": "user", "content": prompt});
 
     String localApi = appCtrl.storage.read(session.chatGPTKey) ?? "";
-    log("API: $localApi");
     String apiKey = "";
-    if(addApiKey != null){
+    if (addApiKey != null) {
       apiKey = addApiKey;
-    }else {
+    } else {
       if (localApi == "") {
-        // apiKey = appCtrl.firebaseConfigModel!.chatGPTKey!;
-        apiKey = "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";
+        apiKey = appCtrl.firebaseConfigModel!.chatGPTKey!;
       } else {
         apiKey = localApi;
       }
     }
-
     final response = await http.post(
       url,
       headers: {
@@ -55,18 +53,19 @@ class ApiServices {
 
     // Do something with the response
     Map<String, dynamic> newresponse =
-    jsonDecode(utf8.decode(response.bodyBytes));
+        jsonDecode(utf8.decode(response.bodyBytes));
 
-    log("RES ${newresponse}");
+    if (response.statusCode == 200) {
+      conversationHistory.add({
+        "role": "assistant",
+        "content": newresponse['choices'][0]['message']['content']
+      });
 
-    conversationHistory.add({
-      "role": "assistant",
-      "content": newresponse['choices'][0]['message']['content']
-    });
-
-log("STATUSCODE ${response.statusCode}");
-    return response.statusCode == 200
-        ? newresponse['choices'][0]['message']['content']
-        : "";
+      return response.statusCode == 200
+          ? newresponse['choices'][0]['message']['content']
+          : "";
+    } else {
+      return "";
+    }
   }
 }

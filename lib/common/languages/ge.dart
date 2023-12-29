@@ -810,4 +810,17 @@ final dynamic ge = {
   'pressTheSensor' : "Drücken Sie auf den Sensor und heben Sie ihn an, wenn Sie Vibrationen spüren",
   'yourFingerprintHasBeen' : "Ihr Fingerabdruck wurde erfolgreich hinzugefügt.",
   'done' : "Erledigt",
+
+  'paidAmount' : "Bezahlte Menge :",
+  'including' : "Einschließlich :",
+  'unlimitedChatImage' : "Unbegrenzter Chat, Bilder und Inhalte",
+  'expiryDate' : "Verfallsdatum :",
+  'unlimitedChatForMonth' : "Unbegrenzter Chat für einen Monat",
+  'unlimitedImage' : "Unbegrenzte Bildgenerierung für einen Monat",
+  'unlimitedContent' : "Einen Monat lang unbegrenzt Inhalte schreiben",
+  'selectThisPlan' : "Wählen Sie diesen Plan aus",
+  'youCanTopUp' : "Sie können Ihr Guthaben entweder\naufladen, indem Sie sich ein Video ansehen",
+  'youCanPurchase' : "Sie können so viele Münzen kaufen\n wie Sie möchten.",
+  'flutterWave': "Flatterwelle",
+  'payStack': "Gehaltsstapel",
 };

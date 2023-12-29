@@ -9,7 +9,7 @@ class LoginBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetBuilder<AppController>(
       builder: (appCtrl) {
-        log("FIRESEBASE : ${appCtrl.firebaseConfigModel!}");
+
         return Column(children: [
           IntrinsicHeight(
               child: Row(children: [

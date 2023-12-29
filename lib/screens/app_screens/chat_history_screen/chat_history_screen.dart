@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import '../../../config.dart';
 
 class ChatHistoryScreen extends StatelessWidget {
@@ -47,14 +49,17 @@ class ChatHistoryScreen extends StatelessWidget {
                           ...snapshot.data!.docs
                               .asMap()
                               .entries
-                              .map((e) => ChatHistoryLayout(
-                                  id: e.value.id,
-                                  data: e.value.data(),
-                                  isLongPress: chatHistoryCtrl.isLongPress,
-                                  onLongPressTap: () => chatHistoryCtrl
-                                      .onLogPressChat(e.value.id),
-                                  onTap: () => chatHistoryCtrl.onTapChat(
-                                      e.value.id, e.value.data())))
+                              .map((e) {
+                                log("CHAT ID ${e.value.data()}");
+                                return ChatHistoryLayout(
+                                    id: e.value.id,
+                                    data: e.value.data(),
+                                    isLongPress: chatHistoryCtrl.isLongPress,
+                                    onLongPressTap: () => chatHistoryCtrl
+                                        .onLogPressChat(e.value.id),
+                                    onTap: () => chatHistoryCtrl.onTapChat(
+                                        e.value.id, e.value.data()));
+                          } )
                               .toList()
                         ]).paddingSymmetric(
                               vertical: Insets.i25, horizontal: Insets.i20));

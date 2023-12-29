@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import '../../config.dart';
 
 class SelectCharacterController extends GetxController {
@@ -8,7 +6,7 @@ class SelectCharacterController extends GetxController {
 
   //on character tap
   onCharacterChange(index,data) async{
-    log("data : $data");
+
     selectIndex = index;
     appCtrl.selectedCharacter = data;
     appCtrl.characterIndex = index;

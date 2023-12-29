@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_typeahead/flutter_typeahead.dart';
 import '../../../../config.dart';
 
 class LanguagePickerLayout extends StatelessWidget {
@@ -110,7 +109,6 @@ class LanguagePickerLayout extends StatelessWidget {
                     SizedBox(
                         height: Sizes.s270,
                         child: CupertinoPicker(
-
                             scrollController: scrollController,
                             selectionOverlay:
                                 CupertinoPickerDefaultSelectionOverlay(
@@ -124,24 +122,6 @@ class LanguagePickerLayout extends StatelessWidget {
                             useMagnifier: true,
                             onSelectedItemChanged: onSelectedItemChanged,
                             children:
-                                /*Scrollbar(
-                                controller: thumbScrollController,
-                                  thumbVisibility: true,
-                                  trackVisibility: true,
-                                  child: Expanded(
-                                    child: ListView.builder(
-                                shrinkWrap: true,
-                                 itemCount: list!.length,
-                                itemBuilder: (context, i) {
-                                Center(
-                                      child: Text(list![i],
-                                      style: i == index
-                                      ? AppCss.outfitSemiBold20.textColor(
-                                      appCtrl.appTheme.primary)
-                                      : AppCss.outfitSemiBold16.textColor(
-                                appCtrl.appTheme.lightText)));
-                              },),
-                                  ))*/
                                 list!
                                     .asMap()
                                     .entries

@@ -94,7 +94,7 @@ class MyAccountController extends GetxController {
     id = appCtrl.storage.read("id") ?? '';
     numberController.text = appCtrl.storage.read("number") ?? "";
     number = numberController.text;
-    emailController.text = appCtrl.storage.read("userName");
+    emailController.text = appCtrl.storage.read("userName") ?? "";
     userName = emailController.text;
     firstNameController.text = appCtrl.storage.read("name") ?? "";
     name = firstNameController.text;
@@ -130,7 +130,7 @@ class MyAccountController extends GetxController {
   Future getImage(source) async {
     final ImagePicker picker = ImagePicker();
     imageFile = (await picker.pickImage(source: source))!;
-    log("imageFile : $imageFile");
+
     if (imageFile != null) {
       update();
       uploadFile();
@@ -143,12 +143,12 @@ class MyAccountController extends GetxController {
     update();
     String fileName = DateTime.now().millisecondsSinceEpoch.toString();
     Reference reference = FirebaseStorage.instance.ref().child(fileName);
-    log("reference : $reference");
+
     var file = File(imageFile!.path);
     UploadTask uploadTask = reference.putFile(file);
 
     uploadTask.then((res) {
-      log("res : $res");
+
       res.ref.getDownloadURL().then((downloadUrl) async {
         appCtrl.storage.write("image", downloadUrl);
 

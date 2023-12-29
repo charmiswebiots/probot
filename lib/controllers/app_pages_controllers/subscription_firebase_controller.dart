@@ -1,7 +1,4 @@
 import 'dart:developer';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:probot/config.dart';
 
 class SubscriptionFirebaseController extends GetxController {
@@ -11,15 +8,15 @@ class SubscriptionFirebaseController extends GetxController {
       paymentMethod,
       isSubscribe = true,
       amountBalance,
-      isBack}) async {
+      isBack, subscriptionId}) async {
     DateTime now = DateTime.now();
     DateTime? expiryDate;
     if (isSubscribe == true) {
       appCtrl.isSubscribe = true;
       appCtrl.storage.write(session.isSubscribe, true);
-      if (subscribeModel!.type == "weekly") {
+      if (subscribeModel!.planType == "Weekly") {
         expiryDate = DateTime(now.year, now.month, now.day + 7);
-      } else if (subscribeModel.type == "monthly") {
+      } else if (subscribeModel.planType == "Monthly") {
         expiryDate = DateTime(now.year, now.month + 1, now.day);
       } else {
         expiryDate = DateTime(now.year + 1, now.month, now.day);
@@ -62,8 +59,13 @@ class SubscriptionFirebaseController extends GetxController {
           "price": isSubscribe ? 0 : amountBalance,
           "balance": appCtrl.envConfig["balance"],
           "paymentMethod": paymentMethod,
+          "subscriptionId": isSubscribe ? subscriptionId : "",
         }).then((value) {
-          isBack ? Get.back() : appCtrl.splashDataCheck();
+          if(isBack) {
+           Get.back();
+           Get.toNamed(routeName.subscriptionPlan);
+          } else {appCtrl.splashDataCheck();
+          }
         });
       } else {
         await FirebaseFirestore.instance
@@ -76,10 +78,16 @@ class SubscriptionFirebaseController extends GetxController {
           "expiryDate": expiryDate,
           "price": isSubscribe ? 0 : amountBalance,
           "isSubscribe": isSubscribe,
+          "subscriptionType": isSubscribe ? subscribeModel!.type : "",
           "balance": appCtrl.envConfig["balance"],
           "paymentMethod": paymentMethod,
+          "subscriptionId": isSubscribe ? subscriptionId : "",
         }).then((value) {
-          isBack ? Get.back() : appCtrl.splashDataCheck();
+          if(isBack) {
+            Get.back();
+            Get.toNamed(routeName.subscriptionPlan);
+          } else {appCtrl.splashDataCheck();
+          }
         });
       }
     });

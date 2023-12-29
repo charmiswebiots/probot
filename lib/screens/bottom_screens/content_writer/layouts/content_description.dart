@@ -9,7 +9,7 @@ class ContentDescription extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<ContentWriterController>(builder: (contentCtrl) {
-      log("LENGTH : ${contentCtrl.htmlData}");
+
       return Column(
         mainAxisSize: MainAxisSize.min,
         children: [

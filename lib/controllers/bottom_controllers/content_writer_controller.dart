@@ -69,50 +69,43 @@ class ContentWriterController extends GetxController {
 
   void processContentWrite() async {
     int balance = appCtrl.envConfig["balance"];
-    if(balance == 0){
+    bool isLocalChatApi = appCtrl.storage.read(session.isChatGPTKey) ?? false;
+    if(balance == 0 && isLocalChatApi == false){
       appCtrl.balanceTopUpDialog();
     }else {
-      int imageCount =
-      int.parse(appCtrl.envConfig["textCompletionCount"].toString());
-      if (imageCount == 0) {
-        Get.snackbar(appFonts.attention.tr, appFonts.yourContentWriting.tr);
-      } else {
-        imageCount = imageCount - 1;
-        appCtrl.envConfig["textCompletionCount"] = imageCount.toString();
-        appCtrl.storage.write(session.envConfig, appCtrl.envConfig);
-        appCtrl.envConfig = appCtrl.storage.read(session.envConfig);
-        speechStopMethod();
-        addTextCount();
-        isLoading.value = true;
-        update();
-        messages.value.add(
-          ContentMessage(
-            text: contentController.text,
-            textMessageType: ContentMessageType.user,
-          ),
-        );
+      speechStopMethod();
+      addTextCount();
+      isLoading.value = true;
+      update();
+      messages.value.add(
+        ContentMessage(
+          text: contentController.text,
+          textMessageType: ContentMessageType.user,
+        ),
+      );
 
-        var input = contentController.text;
-        contentInput.value = contentController.text;
-        contentController.clear();
-        update();
-        log(":IS LOADING : #${isLoading.value}");
+      var input = contentController.text;
+      contentInput.value = contentController.text;
+      contentController.clear();
+      update();
 
-        ApiServices.chatCompeletionResponse(input).then((value) {
-          log("value : $value");
-          htmlData = value;
-          update();
 
-          isLoading.value = false;
-          update();
-        });
-        final subscribeCtrl = Get.isRegistered<SubscriptionFirebaseController>()
-            ? Get.find<SubscriptionFirebaseController>()
-            : Get.put(SubscriptionFirebaseController());
-        await subscribeCtrl.removeBalance();
-        contentController.clear();
+      ApiServices.chatCompeletionResponse(input).then((value) {
+
+        htmlData = value;
         update();
-      }
+
+        log("htmlData : $htmlData");
+
+        isLoading.value = false;
+        update();
+      });
+      final subscribeCtrl = Get.isRegistered<SubscriptionFirebaseController>()
+          ? Get.find<SubscriptionFirebaseController>()
+          : Get.put(SubscriptionFirebaseController());
+      await subscribeCtrl.removeBalance();
+      contentController.clear();
+      update();
     }
   }
 

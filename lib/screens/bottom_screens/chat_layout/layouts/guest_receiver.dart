@@ -44,7 +44,7 @@ class GuestReceiver extends StatelessWidget {
                                     ]),
                                 const VSpace(Sizes.s3),
                               ]).inkWell(
-                            onTap: () => chatCtrl.onTapUnselect(),
+                            onTap: () => chatCtrl.onTapUnselect()
                           )
                   ])
                   .marginSymmetric(horizontal: Insets.i20, vertical: Insets.i5))

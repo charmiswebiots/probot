@@ -1,7 +1,13 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 
+import 'package:flutter_paystack/flutter_paystack.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:flutterwave_standard/core/flutterwave.dart';
+import 'package:flutterwave_standard/models/requests/customer.dart';
+import 'package:flutterwave_standard/models/requests/customizations.dart';
+import 'package:flutterwave_standard/models/responses/charge_response.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:probot/screens/app_screens/balance_top_up/layouts/top_up_payment_list.dart';
@@ -9,6 +15,7 @@ import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import '../../config.dart';
 
+import '../../models/subscribe_model.dart';
 import '../../screens/app_screens/subscription/layouts/paypal_payment.dart';
 import '../../screens/app_screens/subscription/layouts/paypal_services.dart';
 
@@ -23,7 +30,7 @@ class TopUpController extends GetxController {
   SubscribeModel? subscribeModel;
   List paymentMethods = [];
   Map<String, dynamic>? paymentIntentData;
-  bool isLoading = false;
+  bool isLoading = false,isBack = true;
   TextEditingController txtAmount = TextEditingController();
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   String? checkoutUrl;
@@ -43,6 +50,7 @@ class TopUpController extends GetxController {
   String itemName = 'PROBOT SUBSCRIPTION';
   int quantity = 1;
   Function? onFinish;
+  final plugin = PaystackPlugin();
 
   // Stripe Payment Method
   Future<void> stripePayment(
@@ -159,7 +167,19 @@ class TopUpController extends GetxController {
 
   // Stripe amount calculate
   calculateAmount(String amount) {
-    final a = (int.parse(amount)) * 100;
+    double? convertPrice;
+    if (appCtrl.priceSymbol == "\$") {
+      convertPrice = (82.55 * double.parse(amount));
+    }else if(appCtrl.priceSymbol == "€"){
+      convertPrice = (88.69 * double.parse(amount));
+    }else if(appCtrl.priceSymbol == "₹"){
+      convertPrice = (1 * double.parse(amount));
+    }else if(appCtrl.priceSymbol == "£"){
+      convertPrice = (103.02 * double.parse(amount));
+    }
+    log("convertPrice : ${int.parse(convertPrice!.floor().toString()) * 100}");
+    final a = (int.parse(convertPrice.floor().toString()) * 100);
+    log("a :n$a");
     return a.toString();
   }
 
@@ -321,9 +341,170 @@ class TopUpController extends GetxController {
         });
   }
 
+  // Flutter wave payment
+  flutterWavePayment({required String amount,
+    required String currency,
+    SubscribeModel? subscribe}) async {
+    int id = DateTime.now().millisecondsSinceEpoch;
+    final Customer customer = Customer(
+        name: "Flutterwave Developer",
+        phoneNumber: "1234566677777",
+        email: "customer@customer.com");
+    final Flutterwave flutterWave = Flutterwave(
+        context: Get.context!,
+        publicKey: appCtrl.firebaseConfigModel!.flutterWavePublicKey!,
+        currency: currency,
+        redirectUrl: "https://www.google.com/",
+        txRef: id.toString(),
+        amount: amount,
+        customer: customer,
+        paymentOptions: "card",
+        customization: Customization(title: "My Payment"),
+        isTestMode: true);
+    update();
+
+    final ChargeResponse response = await flutterWave.charge();
+    log("RESPONSE $response");
+    update();
+    if (response.success == true) {
+      showDialog(
+          barrierDismissible: false,
+          context: Get.context!,
+          builder: (context) {
+            return AlertDialogCommon(
+                image: eImageAssets.paymentSuccess,
+                bText1: appFonts.okay,
+                title: appFonts.paymentSuccess,
+                subtext: appFonts.congratulation,
+                b1OnTap: () async {
+                  final firebaseCtrl =
+                  Get.isRegistered<SubscriptionFirebaseController>()
+                      ? Get.find<SubscriptionFirebaseController>()
+                      : Get.put(SubscriptionFirebaseController());
+                  firebaseCtrl.subscribePlan(
+                     amountBalance: amount,
+                      isSubscribe: false,
+                      paymentMethod: "Flutterwave",
+                      isBack: true);
+                  update();
+                },
+                crossOnTap: isBack
+                    ? () {
+                  final firebaseCtrl =
+                  Get.isRegistered<SubscriptionFirebaseController>()
+                      ? Get.find<SubscriptionFirebaseController>()
+                      : Get.put(SubscriptionFirebaseController());
+                  firebaseCtrl.subscribePlan(
+                      isSubscribe: false,
+                      amountBalance: amount,
+                      paymentMethod: "Flutterwave",
+                      isBack: true);
+                  update();
+                }
+                    : () => appCtrl.splashDataCheck());
+          });
+    } else {
+      showDialog(
+          barrierDismissible: false,
+          context: Get.context!,
+          builder: (context) {
+            return AlertDialogCommon(
+                image: eImageAssets.paymentFailed,
+                bText1: appFonts.tryAgain,
+                title: appFonts.paymentFailed,
+                subtext: appFonts.oppsDueTo,
+                b1OnTap: () => isBack ? Get.back() : appCtrl.splashDataCheck(),
+                crossOnTap: () =>
+                isBack ? Get.back() : appCtrl.splashDataCheck());
+          });
+    }
+    update();
+  }
+
+
+  //used to generate a unique reference for payment
+  String getReference() {
+    var platform = (Platform.isIOS) ? 'iOS' : 'Android';
+    final thisDate = DateTime.now().millisecondsSinceEpoch;
+    return 'ChargedFrom${platform}_$thisDate';
+  }
+
+  // Paystack payment method
+flutterPaystackPayment (context,{required String amount,
+  required String currency,
+  SubscribeModel? subscribe}) async{
+  plugin.initialize(
+      publicKey: appCtrl.firebaseConfigModel!.paystackPublicKey!);
+update();
+  var charge = Charge()
+  ..currency = currency
+    ..amount = int.parse(amount) * 100
+    ..reference = getReference()
+    ..putCustomField('te',
+        '846g') //to pass extra parameters to be retrieved on the response from Paystack
+    ..email = 'text@email.com';
+  CheckoutResponse response = await plugin.checkout(context,
+      method: CheckoutMethod.card, charge: charge);
+log("message $response}");
+  //check if the response is true or not
+  if (response.status == true) {
+    showDialog(
+        barrierDismissible: false,
+        context: Get.context!,
+        builder: (context) {
+          return AlertDialogCommon(
+              image: eImageAssets.paymentSuccess,
+              bText1: appFonts.okay,
+              title: appFonts.paymentSuccess,
+              subtext: appFonts.congratulation,
+              b1OnTap: () async {
+                final firebaseCtrl =
+                Get.isRegistered<SubscriptionFirebaseController>()
+                    ? Get.find<SubscriptionFirebaseController>()
+                    : Get.put(SubscriptionFirebaseController());
+                firebaseCtrl.subscribePlan(
+                    amountBalance: amount,
+                    isSubscribe: false,
+                    paymentMethod: "Paystack",
+                    isBack: true);
+              },
+              crossOnTap: isBack
+                  ? () {
+                final firebaseCtrl =
+                Get.isRegistered<SubscriptionFirebaseController>()
+                    ? Get.find<SubscriptionFirebaseController>()
+                    : Get.put(SubscriptionFirebaseController());
+                firebaseCtrl.subscribePlan(
+                    amountBalance: amount,
+                    isSubscribe: false,
+                    paymentMethod: "Paystack",
+                    isBack: true);
+              }
+                  : () => appCtrl.splashDataCheck());
+        });
+  } else {
+    showDialog(
+        barrierDismissible: false,
+        context: Get.context!,
+        builder: (context) {
+          return AlertDialogCommon(
+              image: eImageAssets.paymentFailed,
+              bText1: appFonts.tryAgain,
+              title: appFonts.paymentFailed,
+              subtext: appFonts.oppsDueTo,
+              b1OnTap: () => isBack ? Get.back() : appCtrl.splashDataCheck(),
+              crossOnTap: () =>
+              isBack ? Get.back() : appCtrl.splashDataCheck());
+        });
+  }
+update();
+}
+
+
   @override
   void onReady() async {
-    paymentMethods = appArray.paymentMethodList;
+
+    paymentMethods = appArray.topUpPaymentList;
     subscriptionLists = appArray.subscriptionPlan
         .map((e) => SubscribeModel.fromJson(e))
         .toList();
@@ -360,7 +541,7 @@ class TopUpController extends GetxController {
   openSession({amount}) {
     Razorpay razorpay = Razorpay();
     var options = {
-      'key': 'rzp_test_yw7RdKNen8WdHE',
+      'key': appCtrl.firebaseConfigModel!.razorPayKey!,
       'amount': int.parse(amount),
       'name': 'Acme Corp.',
       'description': 'Fine T-Shirt',

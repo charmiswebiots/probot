@@ -46,10 +46,10 @@ class ImagePreviewController extends GetxController {
       Get.snackbar('Success', "Image Downloaded Successfully",
           backgroundColor: appCtrl.appTheme.icon,
           colorText: appCtrl.appTheme.sameWhite);
-      log(result);
       update();
     } else {
       isLoading = false;
+      update();
       Get.snackbar('Alert!', "Something Went Wrong",
           backgroundColor: appCtrl.appTheme.error,
           colorText: appCtrl.appTheme.sameWhite);

@@ -35,10 +35,10 @@ class ImageGenerator extends StatelessWidget {
                     child: Padding(
                   padding: EdgeInsets.only(
                       bottom: MediaQuery.of(context).viewInsets.bottom),
-                  child: Column(
+                  child: const Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Column(children: const [
+                        Column(children: [
                           TopLayout(),
                           VSpace(Sizes.s20),
                           PageAndGridView()

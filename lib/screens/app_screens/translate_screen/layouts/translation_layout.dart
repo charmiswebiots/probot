@@ -1,9 +1,13 @@
 import '../../../../config.dart';
 
+
 class TranslationLayout extends StatelessWidget {
   final String? from, to;
-  final GestureTapCallback? fromOnTap,toOnTap;
-  const TranslationLayout({Key? key, this.from, this.to,this.fromOnTap,this.toOnTap}) : super(key: key);
+  final GestureTapCallback? fromOnTap, toOnTap;
+
+  const TranslationLayout(
+      {Key? key, this.from, this.to, this.fromOnTap, this.toOnTap})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -12,22 +16,8 @@ class TranslationLayout extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-          Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Text(appFonts.from.tr,
-                style: AppCss.outfitMedium12
-                    .textColor(appCtrl.appTheme.lightText)),
-            const VSpace(Sizes.s10),
-            SizedBox(
-                width: Sizes.s120,
-                child: Text(from!.tr,
-                        style: AppCss.outfitMedium16
-                            .textColor(appCtrl.appTheme.txt))
-                    .paddingAll(Insets.i15)
-                    .decorated(
-                        color: appCtrl.appTheme.textField,
-                        borderRadius: const BorderRadius.all(
-                            Radius.circular(AppRadius.r8)))).inkWell(onTap: fromOnTap)
-          ]),
+          ContainerCommonLayout(
+              from: from, fromOnTap: fromOnTap, title: appFonts.from),
           Expanded(
               child: Container(height: 1, color: appCtrl.appTheme.primary)
                   .paddingOnly(top: Insets.i20)),
@@ -47,22 +37,8 @@ class TranslationLayout extends StatelessWidget {
           Expanded(
               child: Container(height: 1, color: appCtrl.appTheme.primary)
                   .paddingOnly(top: Insets.i20)),
-          Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Text(appFonts.to.tr,
-                style: AppCss.outfitMedium12
-                    .textColor(appCtrl.appTheme.lightText)),
-            const VSpace(Sizes.s10),
-            SizedBox(
-                width: Sizes.s120,
-                child: Text(to!.tr,
-                        style: AppCss.outfitMedium16
-                            .textColor(appCtrl.appTheme.txt))
-                    .paddingAll(Insets.i15)
-                    .decorated(
-                        color: appCtrl.appTheme.textField,
-                        borderRadius: const BorderRadius.all(
-                            Radius.circular(AppRadius.r8)))).inkWell(onTap: toOnTap)
-          ])
+          ContainerCommonLayout(
+              from: to, fromOnTap: toOnTap, title: appFonts.to)
         ]));
   }
 }

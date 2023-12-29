@@ -25,4 +25,22 @@ class TextCommon {
         .alignment(Alignment.bottomCenter)
         .paddingSymmetric(vertical: Insets.i40, horizontal: Insets.i20);
   }
+
+  regularLightText12({text}){
+    return Text(text,
+        style: AppCss.outfitRegular12
+            .textColor(appCtrl.appTheme.lightText));
+  }
+
+  outfitMediumPrimary14({text}) {
+    return Text(text,
+        style: AppCss.outfitMedium14.textColor(appCtrl.appTheme.primary));
+  }
+
+  semiBoldPrimary18({text,double? margin}) {
+    return Text(text,
+        style: AppCss.outfitSemiBold18
+            .textColor(appCtrl.appTheme.primary)).marginSymmetric(horizontal: margin ?? 00);
+  }
+
 }

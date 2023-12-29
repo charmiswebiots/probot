@@ -53,7 +53,9 @@ class EmailGeneratorScreen extends StatelessWidget {
                             : const GeneratedMailLayout()),
                     if (emailGeneratorCtrl.isLoader == true)
                       const LoaderLayout()
-                  ]))));
+                  ]).inkWell(onTap: (){
+                    FocusScope.of(context).unfocus();
+                  },))));
     });
   }
 }

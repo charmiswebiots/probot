@@ -20,4 +20,5 @@ class Session {
   String isUserRTL = 'isUserRTL';
   String isUserChangeRTL = 'isUserChangeRTL';
   String isUserThemeChange = 'isUserThemeChange';
+  String userSubscribeData = 'userSubscribeData';
 }

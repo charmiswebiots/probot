@@ -30,3 +30,6 @@ export 'package:fluttertoast/fluttertoast.dart';
 export 'package:image_picker/image_picker.dart';
 export 'package:webview_flutter/webview_flutter.dart';
 export 'package:http_auth/http_auth.dart';
+export 'package:figma_squircle/figma_squircle.dart';
+export 'package:flutter_typeahead/flutter_typeahead.dart';
+export 'package:animated_text_kit/animated_text_kit.dart';

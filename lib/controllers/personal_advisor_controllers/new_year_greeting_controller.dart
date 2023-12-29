@@ -87,7 +87,8 @@ class NewYearGreetingController extends GetxController {
   onNewYearWishesGenerate() {
     if(scaffoldKey.currentState!.validate()) {
       int balance = appCtrl.envConfig["balance"];
-      if(balance == 0){
+      bool isLocalChatApi = appCtrl.storage.read(session.isChatGPTKey) ?? false;
+      if (balance == 0 && isLocalChatApi == false) {
         appCtrl.balanceTopUpDialog();
       }else {
         addCtrl.onInterstitialAdShow();

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:probot/config.dart';
 
 class Home extends StatelessWidget {
@@ -44,6 +46,7 @@ class Home extends StatelessWidget {
                                         snapshot.data!.docs[0].data());
                                 appCtrl.storage.write(session.categoryConfig,
                                     appCtrl.categoryAccessModel);
+                                log("CATEGORY ACCESS ${appCtrl.categoryAccessModel}");
                                 homeCtrl.getQuickData();
                                 homeCtrl.getFavData();
                                 return GetBuilder<QuickAdvisorController>(

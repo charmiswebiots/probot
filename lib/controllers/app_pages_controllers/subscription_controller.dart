@@ -1,28 +1,24 @@
 import 'dart:convert';
 import 'dart:developer';
-
 import 'package:flutter_stripe/flutter_stripe.dart';
-
 import 'package:http/http.dart' as http;
 import 'package:razorpay_flutter/razorpay_flutter.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 import '../../config.dart';
-
 import '../../screens/app_screens/subscription/layouts/paypal_payment.dart';
-import '../../screens/app_screens/subscription/layouts/paypal_services.dart';
 import '../../screens/app_screens/subscription/layouts/razorpay_services.dart';
 
 class SubscriptionController extends GetxController {
   List<SubscribeModel> subscriptionLists = [];
   List currencyList = [];
-int selectedPrice =0;
+  int selectedPrice = 0;
+  int finalPrice = 9;
   int selectIndex = 0;
   int selectedPlan = 0;
   int selectIndexPayment = 0;
   SubscribeModel? subscribeModel;
   List paymentMethods = [];
   Map<String, dynamic>? paymentIntentData;
-  bool isLoading = false,isBack = true;
+  bool isLoading = false, isBack = true;
 
   String? checkoutUrl;
   String? executeUrl;
@@ -39,8 +35,81 @@ int selectedPrice =0;
 
   // item name, price and quantity
   String itemName = 'PROBOT SUBSCRIPTION';
+  String? planType;
+  String? finalPlan;
   int quantity = 1;
   Function? onFinish;
+
+  Map<String, String> headers = {
+    'Authorization': 'Bearer ${appCtrl.firebaseConfigModel!.stripeKey}',
+    'Content-Type': 'application/json; charset=UTF-8',
+  };
+
+  Future<Map<String, dynamic>> onTapCancelSubscription(subId,docId) async {
+    log("SUB ID $subId");
+    final String url = 'https://api.stripe.com/v1/subscriptions/$subId';
+
+    var response = await http.delete(
+      Uri.parse(url),
+      headers: headers,
+      body: jsonEncode({
+        "cancel_at_period_end": true,
+      }),
+    );
+    if (response.statusCode == 200) {
+
+      await FirebaseFirestore.instance.collection("userSubscribe").doc(docId).delete().then((value) {
+
+        showDialog(
+            barrierDismissible: false,
+            context: Get.context!,
+            builder: (context) {
+              return AlertDialogCommon(
+                  image: eImageAssets.success,
+                  bText1: appFonts.okay,
+                  title: appFonts.alert,
+                  subtext: appFonts.successfullyCancelSubscription,
+                  b1OnTap:  isBack ? () {
+                    final quickAdvisorCtrl = Get.isRegistered<QuickAdvisorController>()
+                        ? Get.find<QuickAdvisorController>()
+                        : Get.put(QuickAdvisorController());
+                    quickAdvisorCtrl.onReady();
+                    appCtrl.isSubscribe = false;
+                    appCtrl.isAnySubscribe = false;
+                    appCtrl.storage.write(session.isSubscribe, false);
+                    appCtrl.storage.write(session.isAnySubscribe, false);
+                    appCtrl.update();
+                    Get.back();
+                    Get.offAllNamed(routeName.dashboard);
+
+                  } :() => appCtrl.splashDataCheck(),
+                  crossOnTap:
+                  isBack ? () {
+                    final quickAdvisorCtrl = Get.isRegistered<QuickAdvisorController>()
+                        ? Get.find<QuickAdvisorController>()
+                        : Get.put(QuickAdvisorController());
+                    quickAdvisorCtrl.onReady();
+                    appCtrl.isSubscribe = false;
+                    appCtrl.isAnySubscribe = false;
+                    appCtrl.storage.write(session.isSubscribe, false);
+                    appCtrl.storage.write(session.isAnySubscribe, false);
+                    appCtrl.update();
+                    Get.back();
+                    Get.offAllNamed(routeName.dashboard);
+                  } :() => appCtrl.splashDataCheck());
+            });
+        appCtrl.update();
+        Get.forceAppUpdate();
+      });
+      log("Cancel RES ${json.decode(response.body)}");
+      return json.decode(response.body);
+    } else {
+      print(json.decode(response.body));
+      throw snackBarMessengers(message: "Failed To Cancel Subscription");
+    }
+  }
+
+
 
   // Stripe Payment Method
   Future<void> stripePayment(
@@ -51,9 +120,10 @@ int selectedPrice =0;
       isLoading = true;
       paymentIntentData = await createPaymentIntent(amount, currency);
 
-      log("paymentIntentData: ${paymentIntentData!.entries.first}");
+     log("STRIPE $paymentIntentData");
       if (paymentIntentData != null) {
         await Stripe.instance.initPaymentSheet(
+
             paymentSheetParameters: SetupPaymentSheetParameters(
                 merchantDisplayName: 'JUSTIN',
                 billingDetails: const BillingDetails(
@@ -74,7 +144,7 @@ int selectedPrice =0;
                     paymentIntentData!['ephemeralKey']));
 
         isLoading = false;
-        log("SR : $subscribe");
+
         displayPaymentSheet(subscribe, "stripe");
         update();
       }
@@ -83,7 +153,6 @@ int selectedPrice =0;
     }
     update();
   }
-
 
   // Stripe Error handler
   displayPaymentSheet(subscribe, paymentMethod) async {
@@ -104,16 +173,22 @@ int selectedPrice =0;
                           ? Get.find<SubscriptionFirebaseController>()
                           : Get.put(SubscriptionFirebaseController());
                   firebaseCtrl.subscribePlan(
-                      subscribeModel: subscribe, paymentMethod: paymentMethod,isBack: isBack);
+                      subscribeModel: subscribe,
+                      paymentMethod: paymentMethod,
+                      isBack: isBack);
                 },
-                crossOnTap: isBack ? () {
-                  final firebaseCtrl =
-                  Get.isRegistered<SubscriptionFirebaseController>()
-                      ? Get.find<SubscriptionFirebaseController>()
-                      : Get.put(SubscriptionFirebaseController());
-                  firebaseCtrl.subscribePlan(
-                      subscribeModel: subscribe, paymentMethod: paymentMethod,isBack: isBack);
-                } : () => appCtrl.splashDataCheck());
+                crossOnTap: isBack
+                    ? () {
+                        final firebaseCtrl =
+                            Get.isRegistered<SubscriptionFirebaseController>()
+                                ? Get.find<SubscriptionFirebaseController>()
+                                : Get.put(SubscriptionFirebaseController());
+                        firebaseCtrl.subscribePlan(
+                            subscribeModel: subscribe,
+                            paymentMethod: paymentMethod,
+                            isBack: isBack);
+                      }
+                    : () => appCtrl.splashDataCheck());
           });
     } on Exception {
       showDialog(
@@ -126,7 +201,8 @@ int selectedPrice =0;
                 title: appFonts.paymentFailed,
                 subtext: appFonts.oppsDueTo,
                 b1OnTap: () => isBack ? Get.back() : appCtrl.splashDataCheck(),
-                crossOnTap: () => isBack ? Get.back() : appCtrl.splashDataCheck());
+                crossOnTap: () =>
+                    isBack ? Get.back() : appCtrl.splashDataCheck());
           });
     }
     update();
@@ -134,9 +210,11 @@ int selectedPrice =0;
 
   // Stripe Create payment Method
   createPaymentIntent(String amount, String currency) async {
+
+
     try {
       Map<String, dynamic> body = {
-        'amount': calculateAmount(amount),
+        'amount':  calculateAmount(amount),
         'currency': currency,
         'payment_method_types[]': 'card',
       };
@@ -148,7 +226,7 @@ int selectedPrice =0;
             'Content-Type': 'application/x-www-form-urlencoded'
           });
 
-      log("jsonDecode(response.body) : ${jsonDecode(response.body)}");
+      log("RES STRIPE ${jsonDecode(response.body)}");
       return jsonDecode(response.body);
     } catch (e) {
       throw Exception("");
@@ -157,7 +235,19 @@ int selectedPrice =0;
 
   // Stripe amount calculate
   calculateAmount(String amount) {
-    final a = (int.parse(amount)) * 100;
+    double? convertPrice = double.parse(amount);
+    /*if (appCtrl.priceSymbol == "\$") {
+      convertPrice = (82.55 * double.parse(amount));
+    }else if(appCtrl.priceSymbol == "€"){
+      convertPrice = (88.69 * double.parse(amount));
+    }else if(appCtrl.priceSymbol == "₹"){
+      convertPrice = (1 * double.parse(amount));
+    }else if(appCtrl.priceSymbol == "£"){
+      convertPrice = (103.02 * double.parse(amount));
+    }*/
+    log("convertPrice : ${int.parse(convertPrice!.floor().toString()) * 100}");
+    final a = (int.parse(convertPrice.floor().toString()) * 100);
+    log("a :n$a");
     return a.toString();
   }
 
@@ -235,16 +325,19 @@ int selectedPrice =0;
   onPaypalPayment({required String amount, SubscribeModel? subscribe}) async {
     try {
       final transactions = getOrderParams(amount);
-      log("transactions: $transactions");
+
       final res = await services.createPaypalPayment(transactions, accessToken);
-      log("res : #$res");
+
       checkoutUrl = res["approvalUrl"];
       executeUrl = res["executeUrl"];
       update();
-      log("RES: $res");
-      log("checkoutUrl: $checkoutUrl");
-      log("executeUrl: $executeUrl");
-      Get.to(() => PaypalPayment(subscribe: subscribe,amount: int.parse(amount),url: checkoutUrl,exUrl: executeUrl,));
+
+      Get.to(() => PaypalPayment(
+            subscribe: subscribe,
+            amount: int.parse(amount),
+            url: checkoutUrl,
+            exUrl: executeUrl,
+          ));
     } catch (e) {
       showDialog(
           barrierDismissible: false,
@@ -256,14 +349,15 @@ int selectedPrice =0;
                 title: appFonts.paymentFailed,
                 subtext: appFonts.oppsDueTo,
                 b1OnTap: () => isBack ? Get.back() : appCtrl.splashDataCheck(),
-                crossOnTap: () => isBack ? Get.back() : appCtrl.splashDataCheck());
+                crossOnTap: () =>
+                    isBack ? Get.back() : appCtrl.splashDataCheck());
           });
     }
 
     update();
   }
 
-   initPayment() {
+  initPayment() {
     /// Test payment gateway
     razorpay = Razorpay();
     razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, handlePaymentSuccessResponse);
@@ -271,7 +365,6 @@ int selectedPrice =0;
 
     ///
   }
-
 
   // Razorpay error response
   void handlePaymentErrorResponse() {
@@ -285,7 +378,8 @@ int selectedPrice =0;
               title: appFonts.paymentFailed,
               subtext: appFonts.oppsDueTo,
               b1OnTap: () => isBack ? Get.back() : appCtrl.splashDataCheck(),
-              crossOnTap: () => isBack ? Get.back() : appCtrl.splashDataCheck());
+              crossOnTap: () =>
+                  isBack ? Get.back() : appCtrl.splashDataCheck());
         });
   }
 
@@ -302,21 +396,65 @@ int selectedPrice =0;
               subtext: appFonts.congratulation,
               b1OnTap: () {
                 final firebaseCtrl =
-                Get.isRegistered<SubscriptionFirebaseController>()
-                    ? Get.find<SubscriptionFirebaseController>()
-                    : Get.put(SubscriptionFirebaseController());
+                    Get.isRegistered<SubscriptionFirebaseController>()
+                        ? Get.find<SubscriptionFirebaseController>()
+                        : Get.put(SubscriptionFirebaseController());
                 firebaseCtrl.subscribePlan(
-                    subscribeModel: subscribeModel, paymentMethod: "razor",isBack:isBack);
+                    subscribeModel: subscribeModel,
+                    paymentMethod: "razor",
+                    isBack: isBack);
               },
-              crossOnTap: isBack ? () {
-                final firebaseCtrl =
-                Get.isRegistered<SubscriptionFirebaseController>()
-                    ? Get.find<SubscriptionFirebaseController>()
-                    : Get.put(SubscriptionFirebaseController());
-                firebaseCtrl.subscribePlan(
-                    subscribeModel: subscribeModel, paymentMethod: "razor",isBack:isBack);
-              }  : () =>  appCtrl.splashDataCheck());
+              crossOnTap: isBack
+                  ? () {
+                      final firebaseCtrl =
+                          Get.isRegistered<SubscriptionFirebaseController>()
+                              ? Get.find<SubscriptionFirebaseController>()
+                              : Get.put(SubscriptionFirebaseController());
+                      firebaseCtrl.subscribePlan(
+                          subscribeModel: subscribeModel,
+                          paymentMethod: "razor",
+                          isBack: isBack);
+                    }
+                  : () => appCtrl.splashDataCheck());
         });
+  }
+
+  onPayPlan() {
+    var userName = appCtrl.storage.read("userName");
+    log("SELECTED PRICE $finalPrice");
+    if (userName != null) {
+      var argData = {
+        "price": finalPrice,
+        "plan": finalPlan,
+      };
+      paymentDialog(selectedPrice, subscribeModel,argData);
+      update();
+    } else {
+      Get.offAllNamed(routeName.loginScreen);
+    }
+    update();
+  }
+
+  onSelectPlan(key, value) {
+    selectedPlan = key;
+    selectedPrice = value.data()["price"];
+    planType = value.data()["planType"];
+    finalPlan = planType;
+    finalPrice = selectedPrice;
+    subscribeModel = SubscribeModel.fromJson(value.data());
+    update();
+  }
+
+  onTapPlan(value) {
+    selectedPrice = value.data()["price"];
+    subscribeModel = SubscribeModel.fromJson(value.data());
+    log("SELECTED PRICE PLAN $selectedPrice");
+    var argData = {
+      "price": finalPrice,
+      "plan": finalPlan,
+    };
+    paymentDialog(selectedPrice.toString(), subscribeModel,argData);
+    update();
   }
 
   @override
@@ -342,7 +480,6 @@ int selectedPrice =0;
       // Paypal Payment Method
       try {
         accessToken = await services.getAccessToken();
-        log("accessToken: $accessToken");
       } catch (e) {
         throw Exception("exception: $e");
       }
@@ -359,7 +496,6 @@ int selectedPrice =0;
 
   openSession({SubscribeModel? subscribe}) {
     createOrder().then((orderId) {
-      log("orderId: $orderId");
       if (orderId.toString().isNotEmpty) {
         var options = {
           'key': appCtrl.firebaseConfigModel!.razorPayKey!,
@@ -392,11 +528,8 @@ int selectedPrice =0;
   }
 
   // payments list
-  paymentDialog(data, subscribe) {
-    log("appCtrl.isGuestLogin : ${appCtrl.isGuestLogin}");
-    log("appCtrl.isGuestLogin : $subscribe");
-    log("appCtrl.isGuestLogin : ${data!.toString()}");
-    if (appCtrl.isGuestLogin  ) {
+  paymentDialog(data, subscribe,argData) {
+    if (appCtrl.isGuestLogin) {
       Get.offAllNamed(routeName.signInScreen);
     } else {
       Get.generalDialog(
@@ -405,6 +538,7 @@ int selectedPrice =0;
           return Align(
             alignment: Alignment.center,
             child: PaymentList(
+              argData: argData,
               data: data!.toString(),
               subscribe: subscribe,
             ),

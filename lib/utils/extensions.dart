@@ -82,7 +82,37 @@ extension ProbotExtensions on Widget {
             blurRadius: 4)
       ]);
 
+  Widget tableExtension()=> Container(child: this).decorated(
+      border: Border(
+          left: BorderSide(
+              color: appCtrl.appTheme.primaryLightBorder)));
+
+  Widget planExtension(color)=> Container(child: this).decorated(
+      color: color,
+      borderRadius: const SmoothBorderRadius.only(
+          topLeft: SmoothRadius(
+              cornerRadius: 10, cornerSmoothing: 1),
+          topRight: SmoothRadius(
+              cornerRadius: 10,
+              cornerSmoothing: 1))
+  );
+
+  Widget planListExtension()=> Container(child: this).decorated(
+      color: appCtrl.appTheme.white,
+      borderRadius: BorderRadius.circular(
+          AppRadius.r10),
+      boxShadow: [
+  BoxShadow(
+  color: appCtrl.isTheme
+  ? appCtrl.appTheme.trans
+      : appCtrl.appTheme.primary
+      .withOpacity(0.1),
+  spreadRadius: 1,
+  blurRadius: 4)]);
+
 }
+
+
 
 
 

@@ -1,6 +1,3 @@
-import 'dart:developer';
-import 'package:probot/screens/app_screens/subscription_plan/layouts/after_subscribe_ui.dart';
-
 import '../../../../config.dart';
 
 class AfterSubscribe extends StatelessWidget {
@@ -23,22 +20,17 @@ class AfterSubscribe extends StatelessWidget {
                   .snapshots(),
               builder: (context, snapShot) {
                 if (snapShot.hasData) {
-                  if(snapshot.hasData) {
-                    log("CHEK : ${snapshot.hasData}");
-                    log("CHEK : ${snapShot.hasData}");
+                  if (snapshot.hasData) {
                     return Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        ...snapshot.data!
-                            .docs
-                            .asMap()
-                            .entries
-                            .map((e) {
-                          return SubscribePlanUI(snapShot: snapShot,data: e.value.data());
+                        ...snapshot.data!.docs.asMap().entries.map((e) {
+                          return SubscribePlanUI(
+                              snapShot: snapShot, data: e.value.data());
                         }).toList()
                       ],
                     ).marginSymmetric(horizontal: Insets.i10);
-                  }else{
+                  } else {
                     return Container();
                   }
                 } else {

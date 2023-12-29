@@ -66,8 +66,7 @@ final dynamic en = {
   'marvel': "Marvel",
   'henny': "Henny",
   'sophie': "Sophie",
-  'setupAFingerprint':
-      "Setup a fingerprint scanner to increase the security of your application.",
+  'setupAFingerprint': "Setup a fingerprint scanner to increase the security of your application.",
   'addNow': "Add Now",
   'doItLater': "Do It Later",
 
@@ -77,8 +76,7 @@ final dynamic en = {
   'desc1': "Get a quick response to any query",
   'desc2': "Finest results, a time-saving",
   'desc3': "Best outcome without copies",
-  'chooseOption':
-      "Choose one of the following to enjoy the greatest experience.",
+  'chooseOption': "Choose one of the following to enjoy the greatest experience.",
   'language': "Language",
   'logout': "Logout",
   'chat': "Chat",
@@ -157,8 +155,7 @@ final dynamic en = {
   'viewType': "View type",
   'selectSize': "Select size",
   'selectType': "Select type",
-  'youHaveNotYet':
-      "You have not yet searched for anything, begin your search now.",
+  'youHaveNotYet': "You have not yet searched for anything, begin your search now.",
   'generateImage': "Generate image",
   'noOfImages': "No. of images",
   'imageStyle': "Image style",
@@ -199,14 +196,11 @@ final dynamic en = {
 
   'verify': "Verify",
   'successfullyVerify': "Successfully Verify",
-  'yourFingerprintHasBeenVerify':
-      "Your fingerprint has been verify successfully.",
+  'yourFingerprintHasBeenVerify': "Your fingerprint has been verify successfully.",
   'fingerprintError': "Fingerprint Error",
-  'sorryFingerprint':
-      "Sorry !!  Fingerprint verification failed, please try again..",
+  'sorryFingerprint': "Sorry !!  Fingerprint verification failed, please try again..",
   'tryAgain': "Try again",
-  'deviceNotSupported':
-      "Device not supported or Add fingerprint to your device",
+  'deviceNotSupported': "Device not supported or Add fingerprint to your device",
   'youHaveNotVerify': "You have not yet verify a fingerprint",
 
   'interpretationDefinitions': "Interpretation & Definitions",
@@ -218,45 +212,35 @@ final dynamic en = {
   'childrenPrivacy': "Children's Privacy",
   'linksToOther': "Links to Other Websites",
   'changesToThis': "Changes to this Privacy Policy",
-  'thisPrivacyPolicy':
-      "This Privacy Policy describes Our policies and procedures on the collection, use and disclosure of Your information when You use the Service and tells You about Your privacy rights and how the law protects You.",
+  'thisPrivacyPolicy': "This Privacy Policy describes Our policies and procedures on the collection, use and disclosure of Your information when You use the Service and tells You about Your privacy rights and how the law protects You.",
   'interpretation': "Interpretation :",
-  'theWordOfWhich':
-      "The words of which the initial letter is capitalized have meanings defined under the following conditions. The following definitions shall have the same meaning regardless of whether they appear in singular or in plural.",
+  'theWordOfWhich': "The words of which the initial letter is capitalized have meanings defined under the following conditions. The following definitions shall have the same meaning regardless of whether they appear in singular or in plural.",
   'definitions': "Definitions :",
   'forThePurpose': "For the purposes of this Privacy Policy : ",
   'account': "Account",
-  'meansAUnique':
-      " means a unique account created for You to access our Service or parts of our Service.",
+  'meansAUnique': "means a unique account created for You to access our Service or parts of our Service.",
   'affiliate': "Affiliate",
-  'meansAnEntity':
-      " means an entity that controls, is controlled by or is under common control with a party, where 'control' means ownership of 50% or more of the shares, equity interest or other securities entitled to vote for election of directors or other managing authority.",
+  'meansAnEntity': "means an entity that controls, is controlled by or is under common control with a party, where 'control' means ownership of 50% or more of the shares, equity interest or other securities entitled to vote for election of directors or other managing authority.",
   'application': "Application",
-  'refersToProbot':
-      " refers to ProBot, the software program provided by the Company.",
+  'refersToProbot': "refers to ProBot, the software program provided by the Company.",
   'company': "Company",
-  'referredToAs':
-      "(referred to as either 'the Company', 'We', 'Us' or 'Our' in this Agreement) refers to ProBot.",
+  'referredToAs': "(referred to as either 'the Company', 'We', 'Us' or 'Our' in this Agreement) refers to ProBot.",
   'country': "Country",
   'countryRefers': " refers to: Gujarat, India",
   'device': "Device",
   'meansAnyDevice':
       " means any device that can access the Service such as a computer, a cellphone or a digital tablet.",
   'personalData': "Personal Data",
-  'isAnyInformation':
-      " is any information that relates to an identified or identifiable individual.",
+  'isAnyInformation': "is any information that relates to an identified or identifiable individual.",
 
   'refersTo': " refers to the Application.",
   'serviceProvider': "Service Provider",
-  'providerMeansAny':
-      " means any natural or legal person who processes the data on behalf of the Company. It refers to third-party companies or individuals employed by the Company to facilitate the Service, to provide the Service on behalf of the Company, to perform services related to the Service or to assist the Company in analyzing how the Service is used.",
+  'providerMeansAny': "means any natural or legal person who processes the data on behalf of the Company. It refers to third-party companies or individuals employed by the Company to facilitate the Service, to provide the Service on behalf of the Company, to perform services related to the Service or to assist the Company in analyzing how the Service is used.",
   'usageData': "Usage Data",
-  'refersToData':
-      " refers to data collected automatically, either generated by the use of the Service or from the Service infrastructure itself (for example, the duration of a page visit).",
+  'refersToData': "refers to data collected automatically, either generated by the use of the Service or from the Service infrastructure itself (for example, the duration of a page visit).",
   'you': "You",
   'home': "Home",
-  'meansTheIndividual':
-      "You means the individual accessing or using the Service, or the company, or other legal entity on behalf of which such individual is accessing or using the Service, as applicable.",
+  'meansTheIndividual': "You means the individual accessing or using the Service, or the company, or other legal entity on behalf of which such individual is accessing or using the Service, as applicable.",
 
   //NEW
   "phoneNumberVerification": "Phone Number Verification",
@@ -272,10 +256,8 @@ final dynamic en = {
 
   'paymentSuccess': "Payment Success",
   'paymentFailed': "Payment Failed",
-  'congratulation':
-      "Congratulations !! Your payment was completed successfully.",
-  'oppsDueTo':
-      "Oops !!  Due to a technical issue, payment was failed. Please try again.",
+  'congratulation': "Congratulations !! Your payment was completed successfully.",
+  'oppsDueTo': "Oops !!  Due to a technical issue, payment was failed. Please try again.",
   'payMoneyFrom': "Pay Money From",
   'payPal': "PayPal",
   'stripe': "Stripe",
@@ -291,12 +273,10 @@ final dynamic en = {
   'rewards': " Rewards",
   'availableBalance': "Available Balance",
   'rewardLeft': " Rewards left",
-  'watchTheVideoToWin':
-      "Watch the video to win additional prizes and have more chances to talk with ProBot.",
+  'watchTheVideoToWin': "Watch the video to win additional prizes and have more chances to talk with ProBot.",
   'watchVideo': " Watch Video",
   'congratulationReward': "Congratulation",
-  'congratulationYouGotNewReward':
-      "Congratulations  !! you’ve got a 1 new reward for your ProBot.",
+  'congratulationYouGotNewReward': "Congratulations  !! you’ve got a 1 new reward for your ProBot.",
   'hurrey': "Hurrey !",
   'youHitTheMessage': "You've hit the message limit, ",
   'watchNow': " Watch now",
@@ -317,8 +297,7 @@ final dynamic en = {
   'yourContentWriting': "Your content writing balance is over",
 
   'otpVerification': "OTP Verification",
-  'weHaveSentTheCode':
-      "We have sent the code verification to your mobile number",
+  'weHaveSentTheCode': "We have sent the code verification to your mobile number",
   'verifyProceed': "Verify & proceed",
   'dontReciveOtp': "Don’t receive OTP code ? ",
   'resendIt': "Resend it",
@@ -389,7 +368,7 @@ final dynamic en = {
   'deleteUserSuccessfully': "User Delete Successfully",
   'dataUploadSuccessfully': "Data Upload Successfully",
   'imageUploadSuccessfully': "Image Upload Successfully",
-  'totalCoinsAvailable': "@totalCoins Coins available",
+    'totalCoinsAvailable': "@totalCoins Coins available",
   'wantUnlimited': "Want unlimited question answer click on",
   'viewSubscription': "“ View Subscription Plan”",
   'wantMoreCoins': "Want more coin balance, click on",
@@ -779,9 +758,22 @@ final dynamic en = {
   'addAmountManually': "Add amount manually",
   'addAmount': "Add amount",
 
-'addFingerprint' : "Add fingerprint",
-'placeYourFinger' : "Place your finger on the sensor",
-'pressTheSensor' : "Press the sensor and lift when you feel vibration",
-'yourFingerprintHasBeen' : "Your fingerprint has been added successfully.",
-'done' : "Done",
+  'addFingerprint': "Add fingerprint",
+  'placeYourFinger': "Place your finger on the sensor",
+  'pressTheSensor': "Press the sensor and lift when you feel vibration",
+  'yourFingerprintHasBeen': "Your fingerprint has been added successfully.",
+  'done': "Done",
+
+  'paidAmount': "Paid amount :",
+  'including': "Including :",
+  'unlimitedChatImage': "Unlimited chat, images, & content",
+  'expiryDate': "Expiry Date :",
+  'unlimitedChatForMonth': "Unlimited chat for a month",
+  'unlimitedImage': "Unlimited Image generating for a month",
+  'unlimitedContent': "Unlimited content writing for a month",
+  'selectThisPlan': "Select this Plan",
+  'youCanTopUp': "You can top-up your balance either\nwatching video",
+  'youCanPurchase': "You can purchase as many coins\nas you wish.",
+  'flutterWave': "Flutter wave",
+  'payStack': "Paystack",
 };

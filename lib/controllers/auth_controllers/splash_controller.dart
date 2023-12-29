@@ -1,11 +1,8 @@
 import 'dart:developer';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:intl/intl.dart';
 import 'package:probot/config.dart';
-import 'package:probot/models/category_access_model.dart';
-
 import '../../env.dart';
 
 class SplashController extends GetxController {
@@ -18,19 +15,17 @@ class SplashController extends GetxController {
     var userName = appCtrl.storage.read("userName");
     var firebaseUser = appCtrl.storage.read("firebaseUser");
     var number = appCtrl.storage.read("number");
-    log("number : $number");
+
     appCtrl.isOnboard = onBoard;
-    log("appCtrl.storage.read(session.envConfig) :${appCtrl.storage.read(session.envConfig)}");
+
     appCtrl.envConfig = appCtrl.storage.read(session.envConfig) ?? environment;
 
     update();
     dynamic selectedImage =
         appCtrl.storage.read("backgroundImage") ?? appArray.backgroundList[0];
     appCtrl.storage.write("backgroundImage", selectedImage);
-    log("SPLASH BG : $selectedImage");
 
     await FirebaseFirestore.instance.collection("config").get().then((value) {
-      log("SPLASH DATA ${value.docs.isNotEmpty}");
       if (value.docs.isNotEmpty) {
         appCtrl.firebaseConfigModel =
             FirebaseConfigModel.fromJson(value.docs[0].data());
@@ -105,7 +100,7 @@ class SplashController extends GetxController {
       appCtrl.storage.write(session.isAnySubscribe, false);
       appCtrl.storage.write(session.isSubscribe, false);
       appCtrl.storage.write(session.isAnySubscribe, false);
-      log("appCtrl.envConfig : ${appCtrl.envConfig}");
+
       /*appCtrl.envConfig["balance"] = appCtrl.firebaseConfigModel!.balance ?? 5;*/
       appCtrl.envConfig = appCtrl.storage.read(session.envConfig);
     }
@@ -126,7 +121,6 @@ class SplashController extends GetxController {
     appCtrl.isBiometric = isBiometricSave;
     appCtrl.isLogin = isLoginSave;
 
-    log("isUserRTLChange : $isUserRTLChange");
     //select Character as per selected or guest
     if (appCtrl.isGuestLogin) {
       await FirebaseFirestore.instance
@@ -134,40 +128,43 @@ class SplashController extends GetxController {
           .get()
           .then((value) {
         if (value.docs.isNotEmpty) {
-          appCtrl.selectedCharacter = value.docs[3].data();
-          appCtrl.storage.write(session.characterIndex, 3);
+          appCtrl.selectedCharacter = value.docs[0].data();
+          appCtrl.storage.write(session.characterIndex, 0);
           appCtrl.characterIndex =
-              appCtrl.storage.read(session.characterIndex) ?? 3;
+              appCtrl.storage.read(session.characterIndex) ?? 0;
           appCtrl.characterIndex =
-              appCtrl.storage.read(session.characterIndex) ?? 3;
+              appCtrl.storage.read(session.characterIndex) ?? 0;
           appCtrl.update();
         }
       });
     } else {
-      appCtrl.selectedCharacter = appCtrl.storage.read(session.selectedCharacter);
-      if (appCtrl.selectedCharacter == null) {
+      appCtrl.selectedCharacter = appCtrl.storage.read(session.selectedCharacter) ?? "";
+      log("SPLASH CHAR : ${appCtrl.selectedCharacter }");
+      if (appCtrl.selectedCharacter == "") {
+        log("SPLASH CHAR 2: ${appCtrl.selectedCharacter }");
         await FirebaseFirestore.instance
             .collection("characters")
             .get()
             .then((value) {
           if (value.docs.isNotEmpty) {
-            appCtrl.selectedCharacter = value.docs[3].data();
-            appCtrl.storage.write(session.characterIndex, 3);
+            appCtrl.selectedCharacter = value.docs[0].data();
+            appCtrl.storage.write(session.characterIndex, 0);
             appCtrl.characterIndex =
-                appCtrl.storage.read(session.characterIndex) ?? 3;
+                appCtrl.storage.read(session.characterIndex) ?? 0;
             appCtrl.characterIndex =
-                appCtrl.storage.read(session.characterIndex) ?? 3;
+                appCtrl.storage.read(session.characterIndex) ?? 0;
             appCtrl.update();
           }
         });
+        appCtrl.update();
       } else {
-        appCtrl.selectedCharacter = appCtrl.storage.read(session.selectedCharacter);
+        appCtrl.selectedCharacter = appCtrl.storage.read(session.selectedCharacter) ?? appArray.selectCharacterList[0];
         appCtrl.update();
       }
     }
 
-    log("isBiometricSave: $isBiometricSave");
-    log("isLoginSave: $isLoginSave");
+
+    log("SPLASH CHAR1: ${appCtrl.selectedCharacter}");
     // Language Save
     Locale? locale = const Locale("en", "US");
 
@@ -178,7 +175,7 @@ class SplashController extends GetxController {
 
     //language
     var language = await appCtrl.storage.read(session.locale) ?? "en";
-    log("language ; $language");
+
     if (language != null) {
       appCtrl.languageVal = language;
       if (language == "en") {
@@ -201,8 +198,6 @@ class SplashController extends GetxController {
     Get.updateLocale(locale);
     appCtrl.update();
     Get.forceAppUpdate();
-
-    log("CURRENCY : :${appCtrl.storage.read("currency")}");
 
     //currency
     appCtrl.currency =
@@ -227,20 +222,17 @@ class SplashController extends GetxController {
               .roundToDouble();
     }
 
-    log("number : $number");
     appCtrl.isOnboard = onBoard;
 
     update();
 
-    log("SPLASH BG : $selectedImage");
     appCtrl.isUserTheme = appCtrl.storage.read(session.isUserTheme) ?? false;
     await FirebaseFirestore.instance.collection("config").get().then((value) {
       if (value.docs.isNotEmpty) {
         appCtrl.firebaseConfigModel =
             FirebaseConfigModel.fromJson(value.docs[0].data());
         Stripe.publishableKey = appCtrl.firebaseConfigModel!.stripePublishKey!;
-        log('ON SPLASH LOG $isUserThemeChange');
-        log("IS THEME ${appCtrl.isUserTheme}");
+
         if (isUserThemeChange) {
           appCtrl.storage.write(session.isUserTheme, true);
           appCtrl.isUserThemeChange = true;
@@ -260,7 +252,7 @@ class SplashController extends GetxController {
 //RTL
         if (isUserRTLChange) {
           bool isUserRtl = appCtrl.storage.read(session.isUserRTL) ?? false;
-          log("isUSERR : $isUserRtl");
+
           appCtrl.storage.write(session.isUserRTL, isUserRtl);
           appCtrl.isUserRTL = isUserRtl;
           appCtrl.isUserRTLChange = true;
@@ -277,14 +269,14 @@ class SplashController extends GetxController {
         appCtrl.update();
 
         appCtrl.storage.write(session.firebaseConfig, value.docs[0].data());
-        if(!appCtrl.isGuestLogin) {
+        if (!appCtrl.isGuestLogin) {
           appCtrl.envConfig["balance"] = appCtrl.firebaseConfigModel!.balance;
         }
         appCtrl.update();
         appCtrl.storage.write(session.envConfig, appCtrl.envConfig);
       }
     });
-    log("FIREBASECHECK : ${!appCtrl.isGuestLogin && userName != null}");
+
     if (!appCtrl.isGuestLogin && userName != null) {
       await FirebaseFirestore.instance
           .collection("userSubscribe")
@@ -298,11 +290,24 @@ class SplashController extends GetxController {
             appCtrl.update();
             appCtrl.storage.write(session.envConfig, appCtrl.envConfig);
             appCtrl.storage.write(session.isSubscribe, false);
-            appCtrl.isSubscribe =false;
+            appCtrl.isSubscribe = false;
           } else {
-            appCtrl.isSubscribe = true;
-            appCtrl.storage.write(session.isSubscribe, true);
+            DateTime now = DateTime.now();
+            DateTime expiryDate = DateTime.parse(value.docs[0].data()["expiryDate"].toDate().toString());
+            log("expiryDate : $expiryDate");
+            log("now : $now");
+            log("expiryDate : ${expiryDate.isBefore(now)}");
+            if(expiryDate.isBefore(now)){
+              FirebaseFirestore.instance
+                  .collection("userSubscribe").doc(value.docs[0].id).update({"isSubscribe" : false});
+              appCtrl.isSubscribe = false;
+              appCtrl.storage.write(session.isSubscribe, false);
+            }else{
+              appCtrl.isSubscribe = true;
+              appCtrl.storage.write(session.isSubscribe, true);
+            }
           }
+
           appCtrl.isAnySubscribe = true;
           appCtrl.storage.write(session.isAnySubscribe, true);
         } else {
@@ -331,7 +336,7 @@ class SplashController extends GetxController {
       appCtrl.storage.write(session.isAnySubscribe, false);
       appCtrl.storage.write(session.isSubscribe, false);
       appCtrl.storage.write(session.isAnySubscribe, false);
-      log("appCtrl.envConfig : ${appCtrl.storage.read(session.envConfig)["balance"]}");
+
       int balance = appCtrl.storage.read(session.envConfig)["balance"];
       appCtrl.envConfig["balance"] = balance;
       appCtrl.envConfig = appCtrl.storage.read(session.envConfig);
@@ -339,20 +344,16 @@ class SplashController extends GetxController {
 
     update();
     Future.delayed(const Duration(seconds: 3), () {
-      log("onBoard : $onBoard");
-      log("dfrdfkugh : ${appCtrl.envConfig["balance"] }");
-      final isSubscribe = appCtrl.storage.read(session.isAnySubscribe) ?? false;
       appCtrl.isSubscribe = appCtrl.storage.read(session.isSubscribe) ?? false;
-      Get.offAndToNamed(routeName.subscriptionPlanList) ;
+      Get.offAndToNamed(routeName.subscriptionPlanList);
       update();
       if (onBoard) {
-        if (isSubscribe) {
+        if (appCtrl.isSubscribe) {
           if (isGuestLogin) {
             appCtrl.isGuestLogin = isGuestLogin;
             appCtrl.storage.write(session.isGuestLogin, isGuestLogin);
             Get.toNamed(routeName.dashboard);
           } else {
-            log("onBoard : $onBoard");
             appCtrl.isGuestLogin = false;
             appCtrl.storage.write(session.isGuestLogin, false);
 

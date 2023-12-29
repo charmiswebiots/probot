@@ -56,7 +56,6 @@ class AppController extends GetxController {
 
   //on drawer Tap
   onDrawerTap(index, data) {
-    log("index : E$index");
     Get.back();
     final dashboardCtrl = Get.find<DashboardController>();
     if (data["title"] == "chatBot") {
@@ -87,13 +86,12 @@ class AppController extends GetxController {
         request: request,
         rewardedAdLoadCallback: RewardedAdLoadCallback(
           onAdLoaded: (RewardedAd ad) {
-            log('$ad loaded.');
+
             rewardedAd = ad;
             numRewardedLoadAttempts = 0;
             update();
           },
           onAdFailedToLoad: (LoadAdError error) {
-            log('RewardedAd failed to load: $error');
             rewardedAd = null;
             numRewardedLoadAttempts += 1;
             if (numRewardedLoadAttempts < 3) {
@@ -140,7 +138,7 @@ class AppController extends GetxController {
 
     rewardedAd!.setImmersiveMode(true);
     rewardedAd!.show(onUserEarnedReward: (AdWithoutView ad, RewardItem reward) {
-      log('$ad with reward $RewardItem(${reward.amount}, ${reward.type})');
+
     });
     rewardedAd = null;
     showNewCount(envConfig["balance"]);

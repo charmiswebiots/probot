@@ -12,17 +12,10 @@ class Setting extends StatelessWidget {
           child: Scaffold(
               key: settingCtrl.scaffoldKey,
               backgroundColor: appCtrl.appTheme.bg1,
-              drawer: const CommonDrawer(),
-              appBar: AppBar(
-                  leadingWidth: Sizes.s70,
-                  leading: const CommonMenuIcon().inkWell(
-                      onTap: () =>
-                          settingCtrl.scaffoldKey.currentState!.openDrawer()),
-                  automaticallyImplyLeading: false,
-                  backgroundColor: appCtrl.appTheme.primary,
-                  title: Text(appFonts.setting.tr,
-                      style: AppCss.outfitExtraBold22
-                          .textColor(appCtrl.appTheme.sameWhite))),
+
+              appBar: AppAppBarCommon(
+                  title: appFonts.setting,
+                  leadingOnTap: () => Get.back()),
               body: SingleChildScrollView(
                   child: Column(children: [
                 Stack(alignment: Alignment.center, children: [

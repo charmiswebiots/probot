@@ -26,10 +26,10 @@ class OnBoardingScreen extends StatelessWidget {
                       List images = snapShot.data!.docs[0].data()["images"];
                       List languages =
                           snapShot.data!.docs[0].data()["languages"];
-                      log("========+++++=======${appCtrl.languageVal}");
+
                       int i = languages.indexWhere((element) =>
                           element["language"] == appCtrl.languageVal);
-                      log("===============$i");
+
                       String title = languages[i]["title"];
                       String description = languages[i]["description"];
                       return PageView(

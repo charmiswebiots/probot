@@ -1,6 +1,6 @@
 import '../../../../config.dart';
 
-class ChatScreenAppBar extends StatelessWidget with PreferredSizeWidget {
+class ChatScreenAppBar extends StatelessWidget implements PreferredSizeWidget {
   const ChatScreenAppBar({Key? key}) : super(key: key);
 
   @override

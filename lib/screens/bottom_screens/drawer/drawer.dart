@@ -7,7 +7,7 @@ class CommonDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<HomeController>(builder: (homeCtrl) {
-      log("ISCHAT : ${appCtrl.firebaseConfigModel!.isChatHistory!}");
+
       return Drawer(
           width: Sizes.s223,
           backgroundColor: appCtrl.appTheme.boxBg,
@@ -40,7 +40,7 @@ class CommonDrawer extends StatelessWidget {
                       dashColor: appCtrl.appTheme.txt.withOpacity(.2))
                   .marginSymmetric(horizontal: Insets.i20),
               ...homeCtrl.drawerList.asMap().entries.map((e) {
-                log("guest: ${appCtrl.isGuestLogin}");
+
                 return e.value["title"] == "chatBot"
                     ? appCtrl.firebaseConfigModel!.isChatShow!
                         ? DrawerListCommon(data: e.value, index: e.key)
